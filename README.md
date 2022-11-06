@@ -37,7 +37,6 @@ A simple face recognition GUI that utilizing the Singular Value Decomposition an
 ## Structure
 ```bash
 │   README.md
-│   struct.txt
 │
 ├───doc
 │       Tubes2-Algeo-2022.pdf
