@@ -1,16 +1,22 @@
 # Algeo02-21099
-TuBes Algeo02 2022/2023
+<h2 align="center">
+  Simple Face Recognition<br/>
+</h2>
+<hr>
 
-<!-- ## Table of Contents
-* [General Info](#general-information)
-* [Member List](#member-list)
-* [Features](#features)
-* [Structure](#structure)
-* [Contact](#contact)
-* [License](#license) -->
+## Table of Contents
+1. [General Info](#general-information)
+2. [Member List](#member-list)
+3. [Features](#features)
+4. [Structure](#structure)
+5. [Contact](#contact)
+
+<a name="general-information"></a>
 
 ## General Information
 A simple face recognition GUI that utilizing the Singular Value Decomposition and Eigen Value of matrices.
+
+<a name="member-list"></a>
 
 ## Member List
 
@@ -20,9 +26,13 @@ A simple face recognition GUI that utilizing the Singular Value Decomposition an
 | M. Rizky Sya'ban      | 13521119 |
 | M. Rifqi Farhansyah   | 13521166 |
 
+<a name="features"></a>
+
 ## Features
 - Upload your photo or use the webcam of your device to take a live photos
 - The result of comparison between the uploaded photo with the eigen face database
+
+<a name="structure"></a>
 
 ## Structure
 ```bash
@@ -39,8 +49,11 @@ A simple face recognition GUI that utilizing the Singular Value Decomposition an
 └───test
         tes_1.jpg
 ```
+<a name="Contact"></a>
 
 ## Contact
-Created by Penggendong Handal Group.
-2022
-
+<h2 align="center">
+  Created by Penggendong Handal<nl/>
+  2022
+</h2>
+<hr>
