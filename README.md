@@ -51,8 +51,8 @@ A simple face recognition GUI that utilizing the Singular Value Decomposition an
 <a name="Contact"></a>
 
 ## Contact
-<h2 align="center">
-  Created by Penggendong Handal<nl/>
+<h4 align="center">
+  Created by Penggendong Handal<br/>
   2022
-</h2>
+</h4>
 <hr>
