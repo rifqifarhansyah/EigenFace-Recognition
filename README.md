@@ -1,6 +1,6 @@
 # Algeo02-21099
 <h2 align="center">
-  Simple Face Recognition<br/>
+  🤖 Simple Face Recognition 🤖<br/>
 </h2>
 <hr>
 
@@ -43,6 +43,7 @@ A simple face recognition GUI that utilizing the Singular Value Decomposition an
 │
 ├───src
 │       eigen.py
+│       main.py
 │       SVD.py
 │
 └───test
