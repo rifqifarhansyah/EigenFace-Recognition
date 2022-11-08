@@ -27,8 +27,8 @@ PATH = os.path.dirname(os.path.realpath(__file__))
 
 class App(customtkinter.CTk):
 
-    WIDTH = 900
-    HEIGHT = 600
+    WIDTH = 1600
+    HEIGHT = 1200
 
     def __init__(self):
         super().__init__()
@@ -38,8 +38,10 @@ class App(customtkinter.CTk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         # ============ create two frames ============
-        image = Image.open(PATH + "\\src\\image\\folder1.jpg").resize((255, 190), Image.ANTIALIAS)
-        self.photo = ImageTk.PhotoImage(image)
+        image_input = Image.open(PATH + "\\src\\image\\folder1.jpg") # image in right columns(0)
+        image_closest = Image.open(PATH + "\\src\\image\\folder1.jpg") # image in right columns(1)
+        self.photo_input = ImageTk.PhotoImage(image_input)
+        self.photo_closest = ImageTk.PhotoImage(image_closest)
 
         # configure grid layout (2x1)
         self.grid_columnconfigure(1, weight=1)
@@ -127,27 +129,45 @@ class App(customtkinter.CTk):
         
         self.frame_info1 = customtkinter.CTkFrame(master=self.frame_right)
         self.frame_info1.grid(row=4, column=0, columnspan=1, rowspan=4, pady=20, padx=20, sticky="nsew")
-        self.image_label1 = customtkinter.CTkLabel(master=self.frame_info1, image=self.photo)
+        self.image_label1 = customtkinter.CTkLabel(master=self.frame_info1, image=self.photo_input)
         self.image_label1.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.frame_info2 = customtkinter.CTkFrame(master=self.frame_right)
         self.frame_info2.grid(row=4, column=1, columnspan=1, rowspan=4, pady=20, padx=20, sticky="nsew")
-        self.image_label2 = customtkinter.CTkLabel(master=self.frame_info2, image=self.photo)
+        self.image_label2 = customtkinter.CTkLabel(master=self.frame_info2, image=self.photo_closest)
         self.image_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         # set default values
         self.optionmenu_1.set("Light")
 
-    def open_file_dataset(self):
+    def open_file_dataset(self): # open file dialog for dataset
         filepath = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
-        file = open(filepath,'r')
-        print(file.read())
+        file = open(filepath, encoding="latin1")
+        image_data = Image.open(f"{filepath}").resize((255, 190), Image.ANTIALIAS)
+        self.photo_data = ImageTk.PhotoImage(image_data)
         file.close()
     
-    def open_file_image(self):
+    def open_file_image(self): # open file dialog for image
         filepath = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
-        file = open(filepath,'r')
-        print(file.read())
+        file = open(filepath, encoding="latin1")
+        image_input = Image.open(f"{filepath}")
+        width, height = image_input.size
+        if(width == height): 
+            image_input = image_input
+        offset = abs(width - height) // 2
+        if(width > height):
+            image_input = image_input.crop([offset, 0, width - offset, height]) # crop image
+        else:
+            image_input = image_input.crop([0, offset, width, height - offset])
+        image_input = image_input.resize((720, 720), Image.ANTIALIAS) # resize the square image
+        self.photo_input = ImageTk.PhotoImage(image_input) # convert to PhotoImage
+        print_image = self.image_label1.configure(image=self.photo_input)
         file.close()
+
+    def print_image(self): # print image
+        self.frame_info1 = customtkinter.CTkFrame(master=self.frame_right)
+        self.frame_info1.grid(row=4, column=0, columnspan=1, rowspan=4, pady=20, padx=20, sticky="nsew")
+        self.image_label1 = customtkinter.CTkLabel(master=self.frame_info1, image=self.photo_input)
+        self.image_label1.place(relx=0.5, rely=0.5, anchor=CENTER)        
 
     def button_event(self):
         print("Button pressed")
