@@ -1,13 +1,13 @@
 import cv2
   
 # Read the input image
-img = cv2.imread("rizky.png")
+img = cv2.imread("picture/pins_AdrianaLima/Adriana Lima115_18.jpg")
   
 # Convert into grayscale
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-  
+cv2.imshow("Gray", gray)  
 # Load the cascade
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
+face_cascade = cv2.CascadeClassifier('src/etc/haarcascade_frontalface_alt2.xml')
   
 # Detect faces
 faces = face_cascade.detectMultiScale(gray, 1.1, 4)
