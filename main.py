@@ -9,7 +9,7 @@ import os
 PATH = os.path.dirname(os.path.realpath(__file__))
 
 customtkinter.set_appearance_mode("Light")
-customtkinter.set_default_color_theme("dark-blue")
+customtkinter.set_default_color_theme("dark-blue") # you chan change the theme by "blue", "dark-blue", and "green"
 
 BACKGROUND_COLOR_OFF = "#7e69a7"
 TOGGLE_COLOR_OFF = "#aaaaff"
@@ -38,8 +38,8 @@ class App(customtkinter.CTk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         # ============ create two frames ============
-        image_input = Image.open(PATH + "\\src\\image\\folder1.jpg") # image in right columns(0)
-        image_closest = Image.open(PATH + "\\src\\image\\folder1.jpg") # image in right columns(1)
+        image_input = Image.open(PATH + "\\src\\image\\folder.jpg") # image in right columns(0)
+        image_closest = Image.open(PATH + "\\src\\image\\folder.jpg") # image in right columns(1)
         self.photo_input = ImageTk.PhotoImage(image_input)
         self.photo_closest = ImageTk.PhotoImage(image_closest)
 
@@ -58,57 +58,62 @@ class App(customtkinter.CTk):
         # ============ frame_left ============
         # configure grid layout (1x11)
         self.frame_left.grid_rowconfigure(0, minsize=10)   # empty row with minsize as spacing
-        self.frame_left.grid_rowconfigure(7, weight=1)  # empty row as spacing
+        self.frame_left.grid_rowconfigure(7, weight=0)  # empty row as spacing
+        self.frame_left.grid_rowconfigure(6, weight=1)   # empty row with minsize as spacing
 
         self.label_1 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Insert Your DataSet",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_1.grid(row=1, column=0, pady=5, padx=10)
+        self.label_1.grid(row=0, column=0, pady=5, padx=10)
 
         self.button_1 = customtkinter.CTkButton(master=self.frame_left,
                                                 text="Upload DataSet",
                                                 command=self.open_file_dataset)
-        self.button_1.grid(row=2, column=0, pady=10, padx=20)
+        self.button_1.grid(row=1, column=0, pady=10, padx=20)
 
         self.label_2 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Insert Your Image",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_2.grid(row=3, column=0, pady=5, padx=10)
+        self.label_2.grid(row=2, column=0, pady=5, padx=10)
 
         self.button_2 = customtkinter.CTkButton(master=self.frame_left,
                                                 text="Upload Image",
                                                 command=self.open_file_image)
-        self.button_2.grid(row=4, column=0, pady=10, padx=20)
+        self.button_2.grid(row=3, column=0, pady=10, padx=20)
 
         self.label_3 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Execution Time:",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_3.grid(row=5, column=0, pady=5, padx=10)
+        self.label_3.grid(row=4, column=0, pady=5, padx=10)
 
         self.label_4 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="00:00",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_4.grid(row=6, column=0, pady=5, padx=10)
+        self.label_4.grid(row=5, column=0, pady=5, padx=10)
+
+        self.label_spacing = customtkinter.CTkLabel(master=self.frame_left,
+                                                text="",
+                                                text_font=("Roboto Medium", -16))  # font name and size in px
+        self.label_spacing.grid(row=6, column=0, pady=5, padx=10)
 
         self.label_5 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Result",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_5.grid(row=8, column=0, pady=5, padx=10)
+        self.label_5.grid(row=7, column=0, pady=5, padx=10)
         
 
         self.button_5 = customtkinter.CTkButton(master=self.frame_left,
                                                 text="Download",
                                                 command=self.button_event)
-        self.button_5.grid(row=9, column=0, pady=10, padx=20)
+        self.button_5.grid(row=8, column=0, pady=10, padx=20)
 
         self.label_mode = customtkinter.CTkLabel(master=self.frame_left, text="Appearance Mode:")
-        self.label_mode.grid(row=10, column=0, pady=0, padx=20, sticky="w")
+        self.label_mode.grid(row=9, column=0, pady=0, padx=20, sticky="w")
 
         self.optionmenu_1 = customtkinter.CTkOptionMenu(master=self.frame_left,
                                                         values=["Light", "Dark"],
                                                         command=self.change_appearance_mode)
-        self.optionmenu_1.grid(row=11, column=0, pady=10, padx=20, sticky="w")
-
+        self.optionmenu_1.grid(row=10, column=0, pady=10, padx=20, sticky="w")
 
         # ============ frame_right ============
 
