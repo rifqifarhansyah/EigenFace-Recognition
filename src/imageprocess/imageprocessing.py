@@ -66,4 +66,20 @@ def InputFolderWithCrop(path): #input folder dengan wajah sudah di crop
                 # isExist = os.path.exists(pathname+'/'+listfile)
                 croppicture(pathname+'/'+listfile,"result_picture/"+str(cnt)+".png")
                 cnt+=1
+
+def getCroppedPicture(path) :
+    img = cv2.imread(path)
     
+    # Load the cascade
+    # gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    face_cascade = cv2.CascadeClassifier('src/etc/haarcascade_frontalface_alt2.xml')
+    
+    # Detect faces
+    faces = face_cascade.detectMultiScale(img, 1.1, 4)
+    
+    # Draw rectangle around the faces and crop the faces
+    for (x, y, w, h) in faces:
+        faces = img[y:y + h, x:x + w]
+        faces = cv2.cvtColor(faces, cv2.COLOR_BGR2GRAY)
+    
+    return faces
