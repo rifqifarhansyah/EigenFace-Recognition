@@ -35,6 +35,7 @@ class App(customtkinter.CTk):
 
         self.title("Face Recognition GUI")
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
+        self.iconphoto(False, PhotoImage(file=f"{PATH}..\\..\\image\\icon.png"))
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         # ============ create two frames ============
@@ -58,8 +59,7 @@ class App(customtkinter.CTk):
         # ============ frame_left ============
         # configure grid layout (1x11)
         self.frame_left.grid_rowconfigure(0, minsize=10)   # empty row with minsize as spacing
-        self.frame_left.grid_rowconfigure(7, weight=0)  # empty row as spacing
-        self.frame_left.grid_rowconfigure(6, weight=1)   # empty row with minsize as spacing
+        self.frame_left.grid_rowconfigure(7, weight=1)  # empty row as spacing
 
         self.label_1 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Insert Your DataSet",
@@ -81,39 +81,44 @@ class App(customtkinter.CTk):
                                                 command=self.open_file_image)
         self.button_2.grid(row=3, column=0, pady=10, padx=20)
 
+        self.button_3 = customtkinter.CTkButton(master=self.frame_left,
+                                                text="Camera",
+                                                command=self.open_file_image)
+        self.button_3.grid(row=4, column=0, pady=10, padx=20)
+
         self.label_3 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Execution Time:",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_3.grid(row=4, column=0, pady=5, padx=10)
+        self.label_3.grid(row=5, column=0, pady=5, padx=10)
 
         self.label_4 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="00:00",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_4.grid(row=5, column=0, pady=5, padx=10)
+        self.label_4.grid(row=6, column=0, pady=5, padx=10)
 
         self.label_spacing = customtkinter.CTkLabel(master=self.frame_left,
                                                 text="",
                                                 text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_spacing.grid(row=6, column=0, pady=5, padx=10)
+        self.label_spacing.grid(row=7, column=0, pady=5, padx=10)
 
         self.label_5 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Result",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_5.grid(row=7, column=0, pady=5, padx=10)
+        self.label_5.grid(row=8, column=0, pady=5, padx=10)
         
 
         self.button_5 = customtkinter.CTkButton(master=self.frame_left,
                                                 text="Download",
                                                 command=self.button_event)
-        self.button_5.grid(row=8, column=0, pady=10, padx=20)
+        self.button_5.grid(row=9, column=0, pady=10, padx=20)
 
         self.label_mode = customtkinter.CTkLabel(master=self.frame_left, text="Appearance Mode:")
-        self.label_mode.grid(row=9, column=0, pady=0, padx=20, sticky="w")
+        self.label_mode.grid(row=10, column=0, pady=0, padx=20, sticky="w")
 
         self.optionmenu_1 = customtkinter.CTkOptionMenu(master=self.frame_left,
                                                         values=["Light", "Dark"],
                                                         command=self.change_appearance_mode)
-        self.optionmenu_1.grid(row=10, column=0, pady=10, padx=20, sticky="w")
+        self.optionmenu_1.grid(row=11, column=0, pady=10, padx=20, sticky="w")
 
         # ============ frame_right ============
 
