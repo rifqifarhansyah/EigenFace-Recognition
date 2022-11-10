@@ -3,8 +3,6 @@ import time
 import cv2
 import os
 
-from imageprocess import *
-
 def simultaneous_power_iteration(A, k):
     """ 
     Simultaneous power iteration method for computing the top k eigenvalues
@@ -42,17 +40,4 @@ def getEigenValues(A, k):
     lambda_, Q = simultaneous_power_iteration(A, k) # Compute the eigenvalues and eigenvectors
     return lambda_
 
-
-arr = np.array([[0, 0, -2], [1, 2, 1], [1, 0, 3]])
-anjay = getEigenVectors(arr, 2)
-print(anjay)
-
-
-# img = cv2.imread("D:\ITB 21\KULYAHHH\SEMESTER 3\AlGeo\TUBES 2 ALGEO\Algeo02-21099\sample")
-# image = np.asarray(img)
-# # nilai = eigenValues(image, 1)
-# # np.set_printoptions(threshold=sys.maxsize)
-# print(image)
-# #
-# # def getEigenValue(Matrix) :
     
