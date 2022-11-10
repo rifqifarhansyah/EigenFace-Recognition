@@ -38,8 +38,8 @@ class App(customtkinter.CTk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         # ============ create two frames ============
-        image_input = Image.open(PATH + "..\\..\\..\\image\\folder.jpg") # image in right columns(0)
-        image_closest = Image.open(PATH + "..\\..\\..\\image\\folder.jpg") # image in right columns(1)
+        image_input = Image.open(PATH + "..\\..\\image\\folder.jpg") # image in right columns(0)
+        image_closest = Image.open(PATH + "..\\..\\image\\folder.jpg") # image in right columns(1)
         self.photo_input = ImageTk.PhotoImage(image_input)
         self.photo_closest = ImageTk.PhotoImage(image_closest)
 
