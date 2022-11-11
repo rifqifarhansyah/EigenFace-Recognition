@@ -1,7 +1,10 @@
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import filedialog
+from PyQt5 import *
 
+import datetime
+import cv2
 import customtkinter
 import os
 
@@ -24,6 +27,9 @@ BLACK = "black"
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 
+# Defining ShowFeed() function to display webcam feed in the cameraLabel;
+    
+
 class App(customtkinter.CTk):
 
     WIDTH = 1600
@@ -33,6 +39,7 @@ class App(customtkinter.CTk):
         global image_input
         super().__init__()
 
+        self.cap = cv2.VideoCapture(0)
         self.title("Face Recognition GUI")
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
         self.iconphoto(False, PhotoImage(file=f"{PATH}..\\..\\image\\icon.png"))
@@ -82,8 +89,8 @@ class App(customtkinter.CTk):
         self.button_2.grid(row=3, column=0, pady=10, padx=20)
 
         self.button_3 = customtkinter.CTkButton(master=self.frame_left,
-                                                text="Camera",
-                                                command=self.open_file_image)
+                                                text="Open Camera",
+                                                command=self.start_cam)
         self.button_3.grid(row=4, column=0, pady=10, padx=20)
 
         self.label_3 = customtkinter.CTkLabel(master=self.frame_left,
@@ -94,7 +101,7 @@ class App(customtkinter.CTk):
         self.label_4 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="00:00",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_4.grid(row=6, column=0, pady=5, padx=10)
+        self.label_4.grid(row=5, column=0, pady=5, padx=10)
 
         self.label_spacing = customtkinter.CTkLabel(master=self.frame_left,
                                                 text="",
@@ -142,6 +149,7 @@ class App(customtkinter.CTk):
         self.image_label1 = customtkinter.CTkLabel(master=self.frame_info1, image=self.photo_input)
         self.image_label1.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.frame_info2 = customtkinter.CTkFrame(master=self.frame_right)
+
         self.frame_info2.grid(row=4, column=1, columnspan=1, rowspan=4, pady=20, padx=20, sticky="nsew")
         self.image_label2 = customtkinter.CTkLabel(master=self.frame_info2, image=self.photo_closest)
         self.image_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
@@ -187,6 +195,26 @@ class App(customtkinter.CTk):
 
     def on_closing(self, event=0):
         self.destroy()
+
+    # Defining stop_cam() to stop WEBCAM Preview
+    def stop_cam(self):
+        # Stopping the camera using release() method of cv2.VideoCapture()
+        image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
+        self.photo_input = ImageTk.PhotoImage(image=image_none)
+        self.image_label1.configure(image=self.photo_input)
+        self.cap.release()
+        self.button_3.configure(text="Start Camera", command=self.start_cam)
+
+    # Defining start_cam() to start WEBCAM Preview
+    def start_cam(self):
+        # Starting the camera using cv2.VideoCapture()
+        self.img = self.cap.read()[1]
+        self.imgBGR = cv2.cvtColor(self.img, cv2.COLOR_BGR2RGB)
+        self.cam = Image.fromarray(self.imgBGR)
+        self.photo_input = ImageTk.PhotoImage(image=self.cam)
+        self.image_label1.configure(image=self.photo_input)
+        self.image_label1.after(20, self.start_cam)
+        self.button_3.configure(text="Stop Camera", command=self.stop_cam)
 
 if __name__ == "__main__":
     app = App()
