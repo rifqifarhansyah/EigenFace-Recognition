@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import filedialog
 from PyQt5 import *
+from fpdf import FPDF
 
 import datetime
 import cv2
@@ -46,10 +47,10 @@ class App(customtkinter.CTk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         # ============ create two frames ============
-        image_input = Image.open(PATH + "..\\..\\image\\folder.jpg") # image in right columns(0)
-        image_closest = Image.open(PATH + "..\\..\\image\\folder.jpg") # image in right columns(1)
-        self.photo_input = ImageTk.PhotoImage(image_input)
-        self.photo_closest = ImageTk.PhotoImage(image_closest)
+        self.image_input = Image.open(PATH + "..\\..\\image\\folder.jpg") # image in right columns(0)
+        self.image_closest = Image.open(PATH + "..\\..\\image\\folder.jpg") # image in right columns(1)
+        self.photo_input = ImageTk.PhotoImage(self.image_input)
+        self.photo_closest = ImageTk.PhotoImage(self.image_closest)
 
         # configure grid layout (2x1)
         self.grid_columnconfigure(1, weight=1)
@@ -116,7 +117,7 @@ class App(customtkinter.CTk):
 
         self.button_5 = customtkinter.CTkButton(master=self.frame_left,
                                                 text="Download",
-                                                command=self.button_event)
+                                                command=self.formating_output_file)
         self.button_5.grid(row=9, column=0, pady=10, padx=20)
 
         self.label_mode = customtkinter.CTkLabel(master=self.frame_left, text="Appearance Mode:")
@@ -158,16 +159,16 @@ class App(customtkinter.CTk):
         self.optionmenu_1.set("Light")
 
     def open_file_dataset(self): # open file dialog for dataset
-        filepath = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
-        file = open(filepath, encoding="latin1")
-        image_data = Image.open(f"{filepath}").resize((255, 190), Image.ANTIALIAS)
+        self.filepath = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
+        file = open(self.filepath, encoding="latin1")
+        image_data = Image.open(f"{self.filepath}").resize((255, 190), Image.ANTIALIAS)
         self.photo_data = ImageTk.PhotoImage(image_data)
         file.close()
-    
+
     def open_file_image(self): # open file dialog for image
-        filepath = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
-        file = open(filepath, encoding="latin1")
-        image_input = Image.open(f"{filepath}")
+        self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
+        file = open(self.filepath_image, encoding="latin1")
+        image_input = Image.open(f"{self.filepath_image}")
         width, height = image_input.size
         if(width == height): 
             image_input = image_input
@@ -215,6 +216,27 @@ class App(customtkinter.CTk):
         self.image_label1.configure(image=self.photo_input)
         self.image_label1.after(20, self.start_cam)
         self.button_3.configure(text="Stop Camera", command=self.stop_cam)
+
+    def saveFile(self):
+        # Save file as
+        file = filedialog.asksaveasfile(mode='w', defaultextension=".pdf")
+        if file is None:
+            return
+        self.pdf_file = self.formating_output_file 
+        self.pdf_file.save(file)
+    
+    def formating_output_file(self):
+        fpdf = FPDF()
+        fpdf.add_page()
+        fpdf.set_font("Arial", size=40)
+        fpdf.text(20,20,txt="INPUT IMAGE:")
+        fpdf.image(self.filepath_image, x=20, y=30, w=150)
+        fpdf.add_page()
+        fpdf.text(20,20,txt="CLOSEST IMAGE:")
+        file_directory = filedialog.askdirectory()
+        fpdf.output(os.path.join(file_directory, "output.pdf"))
+
+
 
 if __name__ == "__main__":
     app = App()
