@@ -39,15 +39,15 @@ def InputFolderWithoutCrop(path): #input folder dengan wajah sudah di crop
     cnt=1
     pathname=path
     lis=[]
-    print(pathname)
+    # print(pathname)
     
     for path, currentDirectory, files in os.walk(path):
         for listfile in files:
-            print(pathname+'/'+listfile)
+            # print(pathname+"\\"+listfile)
 
             if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
                 # isExist = os.path.exists(pathname+'/'+listfile)
-                gray(pathname+'/'+listfile,"../../result_picture/"+str(cnt)+".png")
+                gray(pathname+"\\"+listfile,"test/Data_set_adjust/"+str(cnt)+".png")
                 cnt+=1
 
 
@@ -56,15 +56,15 @@ def InputFolderWithCrop(path): #input folder dengan wajah sudah di crop
     cnt=1
     pathname=path
     lis=[]
-    print(pathname)
+    # print(pathname)
     #apabila wajah belum di crop
     for path, currentDirectory, files in os.walk(path):
         for listfile in files:
-            print(pathname+'/'+listfile)
+            # print(pathname+"\\"+listfile)
 
             if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
                 # isExist = os.path.exists(pathname+'/'+listfile)
-                croppicture(pathname+'/'+listfile,"result_picture/"+str(cnt)+".png")
+                croppicture(pathname+"\\"+listfile,"test/Data_set_adjust/"+str(cnt)+".png")
                 cnt+=1
 
 def getCroppedPicture(path) :
