@@ -102,7 +102,7 @@ class App(customtkinter.CTk):
         self.label_4 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="00:00",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_4.grid(row=5, column=0, pady=5, padx=10)
+        self.label_4.grid(row=6, column=0, pady=5, padx=10)
 
         self.label_spacing = customtkinter.CTkLabel(master=self.frame_left,
                                                 text="",
