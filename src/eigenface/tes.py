@@ -59,7 +59,7 @@ from PIL import Image
 import time
 start_time = time.time()
 
-image_input = cv2.imread("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/400.png", 0)
+image_input = cv2.imread("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/Input_DataSet/Alvaro_Morte/598.png", 0)
 dirDataSet = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/Input_DataSet"
 
 # *** find the normalized of Data Set ***
@@ -80,18 +80,20 @@ linerCombination = getLinComOfEigVector(bestEigenVector, vectorImage)
 # *** find matrix of coeff LinearCombination ***
 matrixLinCom = getLinComMatrix(bestEigenVector, trainingFaces)
 minimumDistance = getMinimumDistance(linerCombination, matrixLinCom)
-print("processing.. 95%")
+print("processing.. 95%\n")
 
 # *** tolerance value ***
 toleranceValue = 2
-print(minimumDistance)
+print(f"the minimum distance : {minimumDistance} \n")
+print(f"The closest image filepath : ")
 if (minimumDistance < toleranceValue) :
         imagefile = getClosestImage(dirDataSet, matrixLinCom, linerCombination)
         print(imagefile)
 
 
 end_time = time.time()
-print("time execution : ", (end_time-start_time) * 10**3)
+
+print("\ntime execution : ", (end_time-start_time) * 10**3)
 
 # window_name = 'image'
 # cv2.imshow(window_name, imagefile)
