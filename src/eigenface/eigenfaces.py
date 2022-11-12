@@ -2,6 +2,7 @@ import numpy as np
 import time
 import cv2
 import os
+import math
 from eigen import *
 
 def getVectorImage(matrixImage) :
@@ -19,6 +20,20 @@ def getVectorImage(matrixImage) :
             Vector[count][0] = matrixImage[i][j]
             count += 1
     return Vector
+
+def getImageFromVector (vectorImage) :
+    """
+    size of vectorImage : 256^2 x 1 
+    return matrix of image with size 256x256
+    correspond with vectorImage
+    """
+    imageMatrix = np.zeros((256, 256))
+    count = 0
+    for i in range(256) :
+        for j in range(256) :
+            imageMatrix[i][j] = vectorImage[count][0]
+            count += 1
+    return imageMatrix
 
 def getAvgFaces(Path) : 
     """
@@ -93,10 +108,9 @@ def getBestEigenFaces(normalizedData) :
             greThanOne += 1
     
     redEigenVectors = getEigenVectors(redCov, greThanOne)
-    print("masokkk")
     bestEigenVectorsOfCov = np.empty((256*256, 0), float)
     for i in range(len(redEigenVectors[0])) :
-        temp = np.matmul(normalizedData, redEigenVectors[:, i])
+        temp = np.matmul(normalizedData, np.transpose([redEigenVectors[:, i]]))
         bestEigenVectorsOfCov = np.column_stack((bestEigenVectorsOfCov, temp))
     
     return bestEigenVectorsOfCov
@@ -105,9 +119,9 @@ def getLinComOfEigVector(bestEigenVectorsOfCov, imageVectorInput) :
     """
     return the linear Combination of bestEigenVectorsOfCov from imageVectorInput
     """
-    x = np.transpose(bestEigenVectorsOfCov)
+    x = bestEigenVectorsOfCov
     y = np.transpose(imageVectorInput)
-    linCom = np.transpose(np.linalg.solve(x, y))
+    linCom = np.transpose([np.linalg.lstsq(x, y[0])[0]])
     return linCom
 
 def getLinComMatrix(bestEigenVector, normalizedDataSet) :
@@ -117,15 +131,18 @@ def getLinComMatrix(bestEigenVector, normalizedDataSet) :
     CoefOfLinComMatrix = np.empty((len(bestEigenVector[0]),0), float)
 
     for i in range(len(normalizedDataSet[0])) :
-        LinComOfNormalized = getLinComOfEigVector(bestEigenVector, normalizedDataSet[:,i])
+        LinComOfNormalized = getLinComOfEigVector(bestEigenVector, np.transpose([normalizedDataSet[:,i]]))
         CoefOfLinComMatrix = np.column_stack((CoefOfLinComMatrix, LinComOfNormalized))
     
     return CoefOfLinComMatrix
 
+def getMagnitude(vectorImage) :
+    return math.sqrt(sum(pow(x, 2) for x in vectorImage))
+
 def getMinimumDistance(inputLinCom, CoefMatrix) :
     minimum = 0
     for i in range(len(CoefMatrix[0])) :
-        distance = abs(np.subtract(inputLinCom, CoefMatrix[:, i]))
+        distance = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
         if (distance < minimum) :
             minimum = distance
 
@@ -135,10 +152,10 @@ def getClosestImage (dirPath, CoefMatrix, inputLinCom) :
     """
     return closest image in dirPath
     """
-    minimum = abs(np.subtract(inputLinCom, CoefMatrix[:, 0]))
+    minimum = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
     imageOrder = 0
     for i in range(len(CoefMatrix[0])) :
-        distance = abs(np.subtract(inputLinCom, CoefMatrix[:, i]))
+        distance = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
         if (distance < minimum) :
             minimum = distance
             imageOrder = i
@@ -150,19 +167,6 @@ def getClosestImage (dirPath, CoefMatrix, inputLinCom) :
             if count == imageOrder :
                 return fileNames
 
-def getImageFromVector (vectorImage) :
-    """
-    size of vectorImage : 256^2 x 1 
-    return matrix of image with size 256x256
-    correspond with vectorImage
-    """
-    imageMatrix = np.zeros((256, 256))
-    count = 0
-    for i in range(256) :
-        for j in range(256) :
-            imageMatrix[i][j] = vectorImage[count][0]
-            count += 1
-    return imageMatrix
 
 
 
