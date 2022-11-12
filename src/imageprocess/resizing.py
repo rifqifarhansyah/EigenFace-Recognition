@@ -1,6 +1,6 @@
 import cv2
  
-img = cv2.imread('face.jpg', cv2.IMREAD_UNCHANGED)
+img = cv2.imread('Adriana Lima0_0.jpg', cv2.IMREAD_UNCHANGED)
  
 print('Original Dimensions : ',img.shape)
  

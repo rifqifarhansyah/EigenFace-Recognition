@@ -1,30 +1,34 @@
+import argparse
+import cv2
+import os
 import numpy as np
 
-# matriks = [[1, 2, 3, 4],[4, 5, 6, 7]]
-# matriksd = np.array(matriks)
-# matrikss = np.array(matriks)
-# # print(matriks)
-# # matrikss = np.transpose(matriks)
-# # print(matrikss)
-# kali = np.multiply(matriks , 1/3)
-# # w,v = np.linalg.eig(kali)
-# print(kali)
-# print(type(kali[0][0]))
+from eigenfaces import *
+# construct the argument parser and parse the arguments
+# ap = argparse.ArgumentParser()
+# ap.add_argument("-i", "--image", required=True,
+# 	help="path to input image")
+# args = vars(ap.parse_args())
+# Path = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Data_Set"
 
+# for (dirPath, dirNames, file) in os.walk(Path):
+#     for fileNames in file :
+#         tempPath = os.path.join(dirPath, fileNames)
+#         img = cv2.imread(tempPath, 0)
+#         matrix = np.asarray(img)
+#         print(matrix)
 
-# # numRow, colRow = kali.shape 
-# Vector = np.zeros((170000000, 17000))
-# print(type(Vector[0][0]))
-# # count = -1
-# # for i in range(numRow) :
-# #     for j in range(colRow) :
-# #         count += 1
-# #         Vector[count][0] = (kali[i][j])
+        # print(getVectorImage(matrix))
+        # break
+        # matrix = np.asarray(img)
+        # print(matrix)
+        # vector = getVectorImage(matrix)
+        # printf(vector)
+        
+# img = cv2.imread(r"D:\ITB 21\KULYAHHH\SEMESTER 3\AlGeo\TUBES 2 ALGEO\Algeo02-21099\test\gray\CR1.png", 0)
+# print(img.shape)
 
-# # print(Vector[0][0])
-# # print(type(Vector[0][0]))
-arr = np.empty((2,0), float)
-col = np.array([[6],
-                [0]])
-arr = np.column_stack((arr,col))
-print(arr)
+p = np.array([2,3,4,5,7])
+q = np.array([[2, 4, 3, 7, 8], [6, 5, 4, 2, 3], [3, 5, 9, 7, 8],[0,6,2,7,5],[0,0,0,0,0]])
+
+print(np.linalg.solve(q, p))
