@@ -24,5 +24,4 @@ def getQR(a):
         ht = np.transpose(h)
         q = np.dot(q,ht)
         a = np.dot(h,a)
-        
     return q,a

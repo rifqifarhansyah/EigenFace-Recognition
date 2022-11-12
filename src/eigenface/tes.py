@@ -31,6 +31,7 @@ from eigenfaces import *
 
 p = np.array([2,3,4,5,7])
 q = np.array([[2, 4, 3, 7], [6, 5, 4, 2], [3, 5, 9, 7], [3, 2, 5, 5], [4,2,5,6]])
+print(q[:,:3])
 
 # x = np.linalg.lstsq(q, p)[0]
 # print(x)
@@ -43,11 +44,12 @@ q = np.array([[2, 4, 3, 7], [6, 5, 4, 2], [3, 5, 9, 7], [3, 2, 5, 5], [4,2,5,6]]
 
 # print(hasil)
 
-print(getMagnitude(np.transpose([p])))
+# print(getMagnitude(np.transpose([p])))
 
 # C = np.zeros((3,3))
 # A = np.array([[1,0,0],[1,4,1],[0,0,1]])
 # b = np.array([0,24,0])
+
 # count = 0
 # for i in range(1) :
 #     C[i][i] = A[1][count]

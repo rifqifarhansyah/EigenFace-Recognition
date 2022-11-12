@@ -99,15 +99,15 @@ def getBestEigenFaces(normalizedData) :
     size : N^2 x count (count is number of best)
     """
     redCov = getReducedCov(normalizedData)
-    redEigenValues = getEignValues(redCov, len(redCov))
-
+    redEigenValues, allEigenVectors = getEignValuesVectors(redCov)
+    print("hereee")
     # Asumsi top eigen vector berbanding lurus dengan top eigen values
     greThanOne = 0
     for i in redEigenValues :
         if i > 1 :
             greThanOne += 1
-    
-    redEigenVectors = getEignVectors(redCov, greThanOne)
+
+    redEigenVectors = allEigenVectors[:, :greThanOne]
     bestEigenVectorsOfCov = np.empty((256*256, 0), float)
     for i in range(len(redEigenVectors[0])) :
         temp = np.matmul(normalizedData, np.transpose([redEigenVectors[:, i]]))
@@ -163,12 +163,12 @@ def getClosestImage (dirPath, CoefMatrix, inputLinCom) :
     return filename of closest image in dataset
     """
     minimum = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
-    imageOrder = 0
+    imageOrder = 1
     for i in range(len(CoefMatrix[0])) :
         distance = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
         if (distance < minimum) :
             minimum = distance
-            imageOrder = i
+            imageOrder = i + 1
 
     count = 0
     for (dirPath, dirNames, file) in os.walk(dirPath):
