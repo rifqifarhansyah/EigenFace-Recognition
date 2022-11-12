@@ -99,7 +99,7 @@ def getBestEigenFaces(normalizedData) :
     size : N^2 x count (count is number of best)
     """
     redCov = getReducedCov(normalizedData)
-    redEigenValues = getEigenValues(redCov, len(redCov))
+    redEigenValues = getEignValues(redCov, len(redCov))
 
     # Asumsi top eigen vector berbanding lurus dengan top eigen values
     greThanOne = 0
@@ -107,7 +107,7 @@ def getBestEigenFaces(normalizedData) :
         if i > 1 :
             greThanOne += 1
     
-    redEigenVectors = getEigenVectors(redCov, greThanOne)
+    redEigenVectors = getEignVectors(redCov, greThanOne)
     bestEigenVectorsOfCov = np.empty((256*256, 0), float)
     for i in range(len(redEigenVectors[0])) :
         temp = np.matmul(normalizedData, np.transpose([redEigenVectors[:, i]]))
