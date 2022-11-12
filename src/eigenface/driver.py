@@ -31,7 +31,7 @@ minimumDistance = getMinimumDistance(linerCombination, matrixLinCom)
 
 # *** tolerance value ***
 toleranceValue = 1
-
+print(minimumDistance)
 if (minimumDistance < toleranceValue) :
     imagefile = getClosestImage(dirDataSet, matrixLinCom, linerCombination)
     print(imagefile)

@@ -118,6 +118,7 @@ def getBestEigenFaces(normalizedData) :
 def getLinComOfEigVector(bestEigenVectorsOfCov, imageVectorInput) :
     """
     return the linear Combination of bestEigenVectorsOfCov from imageVectorInput
+    size : number of best eigenfaces x 1
     """
     x = bestEigenVectorsOfCov
     y = np.transpose(imageVectorInput)
@@ -126,7 +127,9 @@ def getLinComOfEigVector(bestEigenVectorsOfCov, imageVectorInput) :
 
 def getLinComMatrix(bestEigenVector, normalizedDataSet) :
     """
-
+    return matrix with linear combination of bestEigenVector 
+    from each image in dataset in each column
+    size : number of best eigenface x number of dataset
     """
     CoefOfLinComMatrix = np.empty((len(bestEigenVector[0]),0), float)
 
@@ -137,10 +140,17 @@ def getLinComMatrix(bestEigenVector, normalizedDataSet) :
     return CoefOfLinComMatrix
 
 def getMagnitude(vectorImage) :
+    """
+    return the magnitude of vectorImage
+    """
     return math.sqrt(sum(pow(x, 2) for x in vectorImage))
 
 def getMinimumDistance(inputLinCom, CoefMatrix) :
-    minimum = 0
+    """
+    return minimum distance from linear combination of input image 
+    and linear combination of each image in data set
+    """
+    minimum = minimum = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
     for i in range(len(CoefMatrix[0])) :
         distance = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
         if (distance < minimum) :
@@ -150,7 +160,7 @@ def getMinimumDistance(inputLinCom, CoefMatrix) :
 
 def getClosestImage (dirPath, CoefMatrix, inputLinCom) :
     """
-    return closest image in dirPath
+    return filename of closest image in dataset
     """
     minimum = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
     imageOrder = 0
