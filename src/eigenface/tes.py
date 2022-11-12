@@ -59,8 +59,8 @@ from PIL import Image
 import time
 start_time = time.time()
 
-image_input = cv2.imread("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/7.png", 0)
-dirDataSet = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/result"
+image_input = cv2.imread("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/400.png", 0)
+dirDataSet = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/Input_DataSet"
 
 # *** find the normalized of Data Set ***
 trainingFaces = getTrainingFaces(dirDataSet)
@@ -83,11 +83,17 @@ minimumDistance = getMinimumDistance(linerCombination, matrixLinCom)
 print("processing.. 95%")
 
 # *** tolerance value ***
-toleranceValue = 1
+toleranceValue = 2
 print(minimumDistance)
 if (minimumDistance < toleranceValue) :
         imagefile = getClosestImage(dirDataSet, matrixLinCom, linerCombination)
         print(imagefile)
 
+
 end_time = time.time()
 print("time execution : ", (end_time-start_time) * 10**3)
+
+# window_name = 'image'
+# cv2.imshow(window_name, imagefile)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()

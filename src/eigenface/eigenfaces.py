@@ -100,7 +100,7 @@ def getBestEigenFaces(normalizedData) :
     """
     redCov = getReducedCov(normalizedData)
     redEigenValues, allEigenVectors = getEignValuesVectors(redCov)
-    print("hereee")
+
     # Asumsi top eigen vector berbanding lurus dengan top eigen values
     greThanOne = 0
     for i in redEigenValues :
