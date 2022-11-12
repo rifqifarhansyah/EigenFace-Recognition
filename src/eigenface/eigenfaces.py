@@ -175,8 +175,7 @@ def getClosestImage (dirPath, CoefMatrix, inputLinCom) :
         for fileNames in file :
             count += 1
             if count == imageOrder :
-                return fileNames
-
+                return os.path.join(dirPath, fileNames)
 
 
 

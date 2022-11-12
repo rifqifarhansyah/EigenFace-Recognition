@@ -16,6 +16,7 @@ def getEignValuesVectors(Matrix):
 
     # Initialize the eigenvalues
     eVal = np.zeros(rowNum) 
+    
     # Iterate until convergence
     while np.linalg.norm(Q - Q_prev) > 1e-10: # Convergence criterion
         # *** Update previous Q ***
