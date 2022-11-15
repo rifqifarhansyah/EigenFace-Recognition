@@ -3,14 +3,16 @@ from PIL import Image, ImageTk
 from tkinter import filedialog
 from PyQt5 import *
 from fpdf import FPDF
-from eigenface import *
-from imageprocess import *
+import driver
 
+import sys
 import datetime
 import cv2
 import customtkinter
 import os
 import time
+
+sys.path.append('C:\File\Kuliah\SEM3\Aljabar linear dan geometri\TUBES 2 GIT\Algeo02-21099\src\eigenface')
 
 start = time.time()
 
@@ -172,7 +174,7 @@ class App(customtkinter.CTk):
         file = open(self.filepath_image, encoding="latin1")
         image_input = Image.open(f"{self.filepath_image}")
         self.image1 = image_input
-
+        self.user_dataset = 'C:/File/Kuliah/SEM3/Aljabar linear dan geometri/TUBES 2 GIT/Algeo02-21099/test/User_DataSet'
         width, height = image_input.size
         if(width == height): 
             image_input = image_input
@@ -183,8 +185,11 @@ class App(customtkinter.CTk):
             image_input = image_input.crop([0, offset, width, height - offset])
         image_input = image_input.resize((720, 720), Image.ANTIALIAS) # resize the square image
         self.photo_input = ImageTk.PhotoImage(image_input) # convert to PhotoImage
-        print_image = self.image_label1.configure(image=self.photo_input)
-
+        self.image_label1.configure(image=self.photo_input)
+        self.path = driver.computeFaceRecognition(self.filepath_image, self.user_dataset)
+        self.image2 = Image.open(f"{self.path}")
+        self.photo_closest = ImageTk.PhotoImage(self.image2)
+        self.image_label2.configure(image=self.photo_closest)
         file.close()
 
     def print_image(self): # print image
