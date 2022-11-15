@@ -2,46 +2,36 @@ import os
 import cv2
 import numpy as np
 from eigenfaces import *
-import time
 from PIL import Image
 
-start = time.time()
+def computeFaceRecognition (self) :
 
-# from main import *
-image_input = cv2.imread("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/gray/CR56.png", 0)
-dirDataSet = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/gray"
+    self.dirDataSet = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/data_100"
 
-# *** find the normalized of Data Set ***
-trainingFaces = getTrainingFaces(dirDataSet)
+    # *** find the normalized of Data Set ***
+    self.trainingFaces = getTrainingFaces(self.dirDataSet)
 
-# *** convert test image to vector ***
-matrixImage = np.asarray(image_input) # NOT FIX
-vectorImage = getVectorImage(matrixImage)
-print("processing.. 5%")
+    # *** convert test image to vector ***
+    self.matrixImage = np.asarray(self.image_input) # NOT FIX
+    self.vectorImage = getVectorImage(self.matrixImage)
+    print("processing.. 5%")
 
-# *** find best Eigen Vector of DataSet ***
-bestEigenVector = getBestEigenFaces(trainingFaces)
-print("processing.. 35%")
+    # *** find best Eigen Vector of DataSet ***
+    self.bestEigenVector = getBestEigenFaces(self.trainingFaces)
+    print("processing.. 35%")
 
-# *** find the linear combination of bestEigenVector from test image ***
-linerCombination = getLinComOfEigVector(bestEigenVector, vectorImage)
+    # *** find the linear combination of bestEigenVector from test image ***
+    self.linerCombination = getLinComOfEigVector(self.bestEigenVector, self.vectorImage)
 
-# *** find matrix of coeff LinearCombination ***
-matrixLinCom = getLinComMatrix(bestEigenVector, trainingFaces)
-minimumDistance = getMinimumDistance(linerCombination, matrixLinCom)
-print("processing.. 70%")
+    # *** find matrix of coeff LinearCombination ***
+    self.matrixLinCom = getLinComMatrix(self.bestEigenVector, self.trainingFaces)
+    self.minimumDistance = getMinimumDistance(self.linerCombination, self.matrixLinCom)
+    print("processing.. 70%")
 
-# *** tolerance value ***
-toleranceValue = 1
-print(minimumDistance)
-if (minimumDistance < toleranceValue) :
-    imagefile = getClosestImage(dirDataSet, matrixLinCom, linerCombination)
-    print(imagefile)
-
-end = time.time()
-print("The time of execution of above program is :",
-(end-start) * 10**3, "ms")
-
-
-
+    # *** tolerance value ***
+    self.toleranceValue = 1
+    print(self.minimumDistance)
+    if (self.minimumDistance < self.toleranceValue) :
+        self.imagefile = getClosestImage(self.dirDataSet, self.matrixLinCom, self.linerCombination)
+        print(self.imagefile)
 

@@ -1,10 +1,8 @@
-import argparse
-import cv2
 import os
+import cv2
 import numpy as np
-import math
-
 from eigenfaces import *
+from PIL import Image
 # construct the argument parser and parse the arguments
 # ap = argparse.ArgumentParser()
 # ap.add_argument("-i", "--image", required=True,
@@ -29,9 +27,9 @@ from eigenfaces import *
 # img = cv2.imread(r"D:\ITB 21\KULYAHHH\SEMESTER 3\AlGeo\TUBES 2 ALGEO\Algeo02-21099\test\gray\CR1.png", 0)
 # print(img.shape)
 
-p = np.array([2,3,4,5,7])
-q = np.array([[2, 4, 3, 7], [6, 5, 4, 2], [3, 5, 9, 7], [3, 2, 5, 5], [4,2,5,6]])
-print(q[:,:3])
+# p = np.array([2,3,4,5,7])
+# q = np.array([[2, 4, 3, 7], [6, 5, 4, 2], [3, 5, 9, 7], [3, 2, 5, 5], [4,2,5,6]])
+# print(q[:,:3])
 
 # x = np.linalg.lstsq(q, p)[0]
 # print(x)
@@ -56,3 +54,48 @@ print(q[:,:3])
 
 # print(C[0][0])
 # print(np.transpose([A[:,0]]))
+
+
+import time
+start_time = time.time()
+
+image_input = cv2.imread("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/Input_DataSet/Alvaro_Morte/598.png", 0)
+dirDataSet = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/Input_DataSet"
+
+# *** find the normalized of Data Set ***
+trainingFaces = getTrainingFaces(dirDataSet)
+
+# *** convert test image to vector ***
+matrixImage = np.asarray(image_input) # NOT FIX
+vectorImage = getVectorImage(matrixImage)
+print("processing.. 5%")
+
+# *** find best Eigen Vector of DataSet ***
+bestEigenVector = getBestEigenFaces(trainingFaces)
+print("processing.. 35%")
+
+# *** find the linear combination of bestEigenVector from test image ***
+linerCombination = getLinComOfEigVector(bestEigenVector, vectorImage)
+
+# *** find matrix of coeff LinearCombination ***
+matrixLinCom = getLinComMatrix(bestEigenVector, trainingFaces)
+minimumDistance = getMinimumDistance(linerCombination, matrixLinCom)
+print("processing.. 95%\n")
+
+# *** tolerance value ***
+toleranceValue = 2
+print(f"the minimum distance : {minimumDistance} \n")
+print(f"The closest image filepath : ")
+if (minimumDistance < toleranceValue) :
+        imagefile = getClosestImage(dirDataSet, matrixLinCom, linerCombination)
+        print(imagefile)
+
+
+end_time = time.time()
+
+print("\ntime execution : ", (end_time-start_time) * 10**3)
+
+# window_name = 'image'
+# cv2.imshow(window_name, imagefile)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()

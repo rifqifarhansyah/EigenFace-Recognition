@@ -10,6 +10,9 @@ import datetime
 import cv2
 import customtkinter
 import os
+import time
+
+start = time.time()
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 
