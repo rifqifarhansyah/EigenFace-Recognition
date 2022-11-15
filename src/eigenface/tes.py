@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 from eigenfaces import *
 from PIL import Image
+import sys
+
 # construct the argument parser and parse the arguments
 # ap = argparse.ArgumentParser()
 # ap.add_argument("-i", "--image", required=True,
@@ -47,7 +49,7 @@ from PIL import Image
 # C = np.zeros((3,3))
 # A = np.array([[1,0,0],[1,4,1],[0,0,1]])
 # b = np.array([0,24,0])
-
+x = 2
 # count = 0
 # for i in range(1) :
 #     C[i][i] = A[1][count]
@@ -55,14 +57,13 @@ from PIL import Image
 # print(C[0][0])
 # print(np.transpose([A[:,0]]))
 
-
 import time
 start_time = time.time()
 
-image_input = cv2.imread("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/Input_DataSet/Alvaro_Morte/598.png", 0)
-dirDataSet = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/Input_DataSet"
+image_input = cv2.imread("test/gray/CR56.png", 0)
+dirDataSet = "test/gray"
 
-# *** find the normalized of Data Set ***
+# *** find the normalized of Data Set *** 
 trainingFaces = getTrainingFaces(dirDataSet)
 
 # *** convert test image to vector ***
@@ -90,7 +91,6 @@ if (minimumDistance < toleranceValue) :
         imagefile = getClosestImage(dirDataSet, matrixLinCom, linerCombination)
         print(imagefile)
 
-
 end_time = time.time()
 
 print("\ntime execution : ", (end_time-start_time) * 10**3)
@@ -99,3 +99,6 @@ print("\ntime execution : ", (end_time-start_time) * 10**3)
 # cv2.imshow(window_name, imagefile)
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
+
+
+

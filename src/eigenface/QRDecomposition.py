@@ -12,14 +12,14 @@ def householder(y):
     return H
 
 def getQR(a):
-    n = a.shape[0]
-    q = np.identity(n)
-    for i in range(n-1):
-        y = a[i:n,i]
+    numRow = a.shape[0]
+    q = np.identity(numRow)
+    for i in range(numRow-1):
+        y = a[i:numRow,i]
         h_prime = householder(y)
         h = np.block([
-            [np.identity(i),np.zeros((i,n-i))],
-            [np.zeros((n-i,i)),h_prime]
+            [np.identity(i),np.zeros((i,numRow-i))],
+            [np.zeros((numRow-i,i)),h_prime]
         ])
         ht = np.transpose(h)
         q = np.dot(q,ht)

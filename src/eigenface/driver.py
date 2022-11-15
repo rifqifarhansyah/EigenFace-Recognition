@@ -6,7 +6,7 @@ from PIL import Image
 
 def computeFaceRecognition (self) :
 
-    self.dirDataSet = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/data_100"
+    self.dirDataSet = "test/"
 
     # *** find the normalized of Data Set ***
     self.trainingFaces = getTrainingFaces(self.dirDataSet)
@@ -33,5 +33,6 @@ def computeFaceRecognition (self) :
     print(self.minimumDistance)
     if (self.minimumDistance < self.toleranceValue) :
         self.imagefile = getClosestImage(self.dirDataSet, self.matrixLinCom, self.linerCombination)
-        print(self.imagefile)
+        return(self.imagefile)
+    
 
