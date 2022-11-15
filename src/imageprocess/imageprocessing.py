@@ -40,7 +40,7 @@ def gray(path,output): # menjadikan gambar menjadi grayscale dan resize
     cv2.imwrite(output,gray_image)
     
 
-def InputFolderWithoutCrop(path): #input folder dengan wajah sudah di crop
+def InputFolderWithoutCrop(path,output): #input folder dengan wajah sudah di crop
     # return all files as a list
     
     pathname=path
@@ -55,12 +55,12 @@ def InputFolderWithoutCrop(path): #input folder dengan wajah sudah di crop
             if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
                 # isExist = os.path.exists(pathname+'/'+listfile)
                 # print(listfile)
-                gray(path+"/"+listfile,"test/Data_set_adjust/"+str(listfile)+".png")
+                gray(path+"/"+listfile,output+"//"+str(listfile)+".png")
             else :
                 InputFolderWithoutCrop(pathname+"/"+listfile)
 
 
-def InputFolderWithCrop(path): #input folder dengan wajah sudah di crop
+def InputFolderWithCrop(path,output): #input folder dengan wajah sudah di crop
     # return all files as a list
     
     pathname=path
@@ -73,7 +73,7 @@ def InputFolderWithCrop(path): #input folder dengan wajah sudah di crop
             # print(path+"/"+listfile)
             if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
                 # isExist = os.path.exists(pathname+'/'+listfile)
-                croppicture(path+"/"+listfile,"test/Data_set_adjust/"+str(listfile)+".png")
+                croppicture(path+"/"+listfile,output+"//"+str(listfile)+".png")
             else :
                 InputFolderWithCrop(pathname+"/"+listfile)
 
