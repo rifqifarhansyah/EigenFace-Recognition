@@ -107,7 +107,7 @@ class App(customtkinter.CTk):
         self.label_3.grid(row=5, column=0, pady=5, padx=10)
 
         self.label_4 = customtkinter.CTkLabel(master=self.frame_left,
-                                              text="00:00",
+                                              text="00:00:00",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
         self.label_4.grid(row=6, column=0, pady=5, padx=10)
 
@@ -169,7 +169,8 @@ class App(customtkinter.CTk):
         self.dataset_file = filedialog.askdirectory()
 
     def open_file_image(self): # open file dialog for image
-        self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
+        self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("png files","*.png"), ("jpg files","*.jpg"), ("jpeg files","*.jpeg")))
+        start = time.time()
         file = open(self.filepath_image, encoding="latin1")
         image_input = Image.open(f"{self.filepath_image}")
         self.image1 = image_input
@@ -190,6 +191,21 @@ class App(customtkinter.CTk):
         self.image2 = self.image2.resize((500, 500), Image.ANTIALIAS) # resize the square image
         self.photo_closest = ImageTk.PhotoImage(self.image2)
         self.image_label2.configure(image=self.photo_closest)
+        end = time.time()
+        executionTime = round((end - start)*100)
+        print(executionTime)
+        ms = executionTime % 100
+        executionTime = executionTime // 100
+        if(executionTime<600):
+            if(executionTime%60<10):
+                self.label_4.configure(text=f"0{(executionTime//60):.0f}:0{(executionTime%60):.0f}:{ms}")
+            else:
+                self.label_4.configure(text=f"0{(executionTime//60):.0f}:{(executionTime%60):.0f}:{ms}")
+        elif(executionTime>=600):
+            if(executionTime%60<10):
+                self.label_4.configure(text=f"{(executionTime//60):.0f}:0{(executionTime%60):.0f}:{ms}")
+            else:
+                self.label_4.configure(text=f"{(executionTime//60):.0f}:{(executionTime%60):.0f}:{ms}")
         file.close()
 
     def print_image(self): # print image
@@ -243,6 +259,7 @@ class App(customtkinter.CTk):
         fpdf.image(self.filepath_image, x=20, y=30, w=150)
         fpdf.add_page()
         fpdf.text(20,20,txt="CLOSEST IMAGE:")
+        fpdf.image(self.path, x=20, y=30, w=150)
         file_directory = filedialog.askdirectory()
         fpdf.output(os.path.join(file_directory, "output.pdf"))
 
