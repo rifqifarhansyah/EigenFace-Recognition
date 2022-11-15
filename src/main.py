@@ -3,6 +3,8 @@ from PIL import Image, ImageTk
 from tkinter import filedialog
 from PyQt5 import *
 from fpdf import FPDF
+from eigenface import *
+from imageprocess import *
 
 import datetime
 import cv2
@@ -159,16 +161,15 @@ class App(customtkinter.CTk):
         self.optionmenu_1.set("Light")
 
     def open_file_dataset(self): # open file dialog for dataset
-        self.filepath = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
-        file = open(self.filepath, encoding="latin1")
-        image_data = Image.open(f"{self.filepath}").resize((255, 190), Image.ANTIALIAS)
-        self.photo_data = ImageTk.PhotoImage(image_data)
-        file.close()
+        self.dataset_file = filedialog.askdirectory()
+        return self.dataset_file
 
     def open_file_image(self): # open file dialog for image
         self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
         file = open(self.filepath_image, encoding="latin1")
         image_input = Image.open(f"{self.filepath_image}")
+        self.image1 = image_input
+
         width, height = image_input.size
         if(width == height): 
             image_input = image_input
@@ -180,6 +181,7 @@ class App(customtkinter.CTk):
         image_input = image_input.resize((720, 720), Image.ANTIALIAS) # resize the square image
         self.photo_input = ImageTk.PhotoImage(image_input) # convert to PhotoImage
         print_image = self.image_label1.configure(image=self.photo_input)
+
         file.close()
 
     def print_image(self): # print image
@@ -235,8 +237,6 @@ class App(customtkinter.CTk):
         fpdf.text(20,20,txt="CLOSEST IMAGE:")
         file_directory = filedialog.askdirectory()
         fpdf.output(os.path.join(file_directory, "output.pdf"))
-
-
 
 if __name__ == "__main__":
     app = App()
