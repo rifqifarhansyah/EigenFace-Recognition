@@ -1,6 +1,7 @@
 import cv2
 import os
 import time
+import shutil
 
 def croppicture(path,output): #input picture dengan wajah belum di crop
     img = cv2.imread(path)
@@ -11,13 +12,18 @@ def croppicture(path,output): #input picture dengan wajah belum di crop
     
     # Detect faces
     faces = face_cascade.detectMultiScale(img, 1.1, 4)
-    
+    image=img
     # Draw rectangle around the faces and crop the faces
     for (x, y, w, h) in faces:
         faces = img[y:y + h, x:x + w]
         faces = cv2.cvtColor(faces, cv2.COLOR_BGR2GRAY)
+        scale_percent = 256 # percent of original size
+        width = int(image.shape[1] * scale_percent / image.shape[1])
+        height = int(image.shape[0] * scale_percent / image.shape[0])
+        dim = (width, height)
+        image=cv2.resize(faces,dim,interpolation=cv2.INTER_AREA)
         cv2.imwrite(output, faces)
-
+        
 def gray(path,output): # menjadikan gambar menjadi grayscale dan resize
     image = cv2.imread(path)
 
@@ -36,36 +42,40 @@ def gray(path,output): # menjadikan gambar menjadi grayscale dan resize
 
 def InputFolderWithoutCrop(path): #input folder dengan wajah sudah di crop
     # return all files as a list
-    cnt=1
-    pathname=path
-    lis=[]
-    # print(pathname)
     
+    pathname=path
+    # print(os.listdir(pathname))
+    #apabila wajah belum di crop
     for path, currentDirectory, files in os.walk(path):
         for listfile in files:
-            # print(pathname+"\\"+listfile)
-
+            # print(path+"\\"+listfile)
+            # print(files[:-3])
+            # print(files)
+            # print(path+"/"+listfile)
             if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
                 # isExist = os.path.exists(pathname+'/'+listfile)
-                gray(pathname+"\\"+listfile,"test/Data_set_adjust/"+str(cnt)+".png")
-                cnt+=1
+                # print(listfile)
+                gray(path+"/"+listfile,"test/Data_set_adjust/"+str(listfile)+".png")
+            else :
+                InputFolderWithoutCrop(pathname+"/"+listfile)
 
 
 def InputFolderWithCrop(path): #input folder dengan wajah sudah di crop
     # return all files as a list
-    cnt=1
+    
     pathname=path
-    lis=[]
-    # print(pathname)
+    # print(os.listdir(pathname))
     #apabila wajah belum di crop
     for path, currentDirectory, files in os.walk(path):
         for listfile in files:
-            # print(pathname+"\\"+listfile)
-
+            # print(path+"\\"+listfile)
+            # print(listfile)
+            # print(path+"/"+listfile)
             if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
                 # isExist = os.path.exists(pathname+'/'+listfile)
-                croppicture(pathname+"\\"+listfile,"test/Data_set_adjust/"+str(cnt)+".png")
-                cnt+=1
+                croppicture(path+"/"+listfile,"test/Data_set_adjust/"+str(listfile)+".png")
+            else :
+                InputFolderWithCrop(pathname+"/"+listfile)
 
 def getCroppedPicture(path) :
     img = cv2.imread(path)
@@ -83,3 +93,20 @@ def getCroppedPicture(path) :
         faces = cv2.cvtColor(faces, cv2.COLOR_BGR2GRAY)
     
     return faces
+
+def copyFolder(path,output):
+    pathname=path
+    lis=[]
+    # print(os.listdir(pathname))
+    #apabila wajah belum di crop
+    for path, currentDirectory, files in os.walk(path):
+        for listfile in files:
+            # print(path+"\\"+listfile)
+
+            # print(path+"/"+listfile)
+            if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
+                # isExist = os.path.exists(pathname+'/'+listfile)
+                shutil.copyfile(path+"/"+listfile,output+"\\"+str(listfile)+".png")
+                # croppicture(path+"/"+listfile,output++str(listfile)+".png")
+            else :
+                copyFolder(pathname+"/"+listfile,output)
