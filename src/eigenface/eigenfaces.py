@@ -3,7 +3,7 @@ import time
 import cv2
 import os
 import math
-from eigen import *
+from eigenface import eigen
 
 def getVectorImage(matrixImage) :
     """
@@ -99,7 +99,7 @@ def getBestEigenFaces(normalizedData) :
     size : N^2 x count (count is number of best)
     """
     redCov = getReducedCov(normalizedData)
-    redEigenValues, allEigenVectors = getEignValuesVectors(redCov)
+    redEigenValues, allEigenVectors = eigen.getEignValuesVectors(redCov)
 
     # Asumsi top eigen vector berbanding lurus dengan top eigen values
     greThanOne = 0

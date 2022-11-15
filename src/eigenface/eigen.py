@@ -1,5 +1,4 @@
 import numpy as np
-from QRDecomposition import *
 
 def getEignValuesVectors(Matrix):
     """ 
