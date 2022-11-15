@@ -6,13 +6,13 @@ from PIL import Image
 
 def computeFaceRecognition (self) :
 
-    self.dirDataSet = "test/"
+    self.dirDataSet = "test/User_DataSet"
 
     # *** find the normalized of Data Set ***
     self.trainingFaces = getTrainingFaces(self.dirDataSet)
 
     # *** convert test image to vector ***
-    self.matrixImage = np.asarray(self.image_input) # NOT FIX
+    self.matrixImage = np.asarray(self.image_input) 
     self.vectorImage = getVectorImage(self.matrixImage)
     # print("processing.. 5%")
 
