@@ -15,8 +15,11 @@ def getVectorImage(matrixImage) :
     numCol = len(matrixImage[0])
     Vector = np.zeros((numRow*numCol, 1))
     count = 0
+    # print(numRow, numCol)
+    # print(type(numRow))
     for i in range(numRow) :
         for j in range(numCol) :
+            # print(count,i,j)
             Vector[count][0] = matrixImage[i][j]
             count += 1
     return Vector

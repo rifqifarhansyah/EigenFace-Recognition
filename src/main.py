@@ -167,7 +167,6 @@ class App(customtkinter.CTk):
 
     def open_file_dataset(self): # open file dialog for dataset
         self.dataset_file = filedialog.askdirectory()
-        return self.dataset_file
 
     def open_file_image(self): # open file dialog for image
         self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("jpg files","*.jpg"), ("png files","*.png"), ("jpeg files","*.jpeg")))
@@ -182,12 +181,13 @@ class App(customtkinter.CTk):
             image_input = image_input.crop([offset, 0, width - offset, height]) # crop image
         else:
             image_input = image_input.crop([0, offset, width, height - offset])
-        image_input = image_input.resize((720, 720), Image.ANTIALIAS) # resize the square image
+        image_input = image_input.resize((500, 500), Image.ANTIALIAS) # resize the square image
         self.photo_input = ImageTk.PhotoImage(image_input) # convert to PhotoImage
         self.image_label1.configure(image=self.photo_input)
-        self.Input
-        self.path = driver.computeFaceRecognition(self)
+        imageprocessing.InputFolderWithoutCrop(self)
+        self.path = driver.computeFaceRecognition(self.image1)
         self.image2 = Image.open(f"{self.path}")
+        self.image2 = self.image2.resize((500, 500), Image.ANTIALIAS) # resize the square image
         self.photo_closest = ImageTk.PhotoImage(self.image2)
         self.image_label2.configure(image=self.photo_closest)
         file.close()

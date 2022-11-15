@@ -42,8 +42,9 @@ def gray(path,output): # menjadikan gambar menjadi grayscale dan resize
 
 def InputFolderWithoutCrop(self): #input folder dengan wajah sudah di crop
     # return all files as a list
+    self.path = self.dataset_file
     self.output = 'test/User_DataSet'
-    self.pathname=self.dataset_file
+    self.pathname=self.path
     # print(os.listdir(pathname))
     #apabila wajah belum di crop
     for self.path, self.currentDirectory, self.files in os.walk(self.path):

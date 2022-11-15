@@ -8,34 +8,34 @@ from eigenface import eigenfaces
 
 
 sys.path.append('')
-def computeFaceRecognition (self) :
+def computeFaceRecognition(image_input):
 
-    self.dirDataSet = "test/User_DataSet"
+    dirDataSet = "test/User_DataSet"
 
     # *** find the normalized of Data Set ***
-    self.trainingFaces = eigenfaces.getTrainingFaces(self.dirDataSet)
+    trainingFaces = eigenfaces.getTrainingFaces(dirDataSet)
 
     # *** convert test image to vector ***
-    self.matrixImage = np.asarray(self.image_input) 
-    self.vectorImage = eigenfaces.getVectorImage(self.matrixImage)
+    matrixImage = np.asarray(image_input) 
+    vectorImage = eigenfaces.getVectorImage(matrixImage)
     print("processing.. 5%")
 
     # *** find best Eigen Vector of DataSet ***
-    self.bestEigenVector = eigenfaces.getBestEigenFaces(self.trainingFaces)
+    bestEigenVector = eigenfaces.getBestEigenFaces(trainingFaces)
     print("processing.. 35%")
 
     # *** find the linear combination of bestEigenVector from test image ***
-    self.linerCombination = eigenfaces.getLinComOfEigVector(self.bestEigenVector, self.vectorImage)
+    linerCombination = eigenfaces.getLinComOfEigVector(bestEigenVector, vectorImage)
 
     # *** find matrix of coeff LinearCombination ***
-    self.matrixLinCom = eigenfaces.getLinComMatrix(self.bestEigenVector, self.trainingFaces)
-    self.minimumDistance = eigenfaces.getMinimumDistance(self.linerCombination, self.matrixLinCom)
+    matrixLinCom = eigenfaces.getLinComMatrix(bestEigenVector, trainingFaces)
+    minimumDistance = eigenfaces.getMinimumDistance(linerCombination, matrixLinCom)
     print("processing.. 70%")
 
     # *** tolerance value ***
-    self.toleranceValue = 1
-    print(self.minimumDistance)
-    if (self.minimumDistance < self.toleranceValue) :
-        self.imagefile = eigenfaces.getClosestImage(self.dirDataSet, self.matrixLinCom, self.linerCombination)
-        return(self.imagefile)
+    toleranceValue = 2
+    print(minimumDistance)
+    if (minimumDistance < toleranceValue) :
+        imagefile = eigenfaces.getClosestImage(dirDataSet, matrixLinCom, linerCombination)
+        return(imagefile)
 
