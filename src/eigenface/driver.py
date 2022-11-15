@@ -1,10 +1,13 @@
 import os
 import cv2
+import sys
 import numpy as np
 # from eigenfaces import *
 from PIL import Image
 from eigenface import eigenfaces
 
+
+sys.path.append('')
 def computeFaceRecognition (self) :
 
     self.dirDataSet = "test/User_DataSet"
