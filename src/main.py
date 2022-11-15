@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 from tkinter import filedialog
 from PyQt5 import *
 from fpdf import FPDF
-import driver
+import eigenface.driver as driver
 
 import sys
 import datetime
