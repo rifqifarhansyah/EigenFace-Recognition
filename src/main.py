@@ -15,7 +15,7 @@ import os
 import time
 
 start = time.time()
-
+ss=time.time()
 PATH = os.path.dirname(os.path.realpath(__file__))
 
 customtkinter.set_appearance_mode("Light")
@@ -241,6 +241,8 @@ class App(customtkinter.CTk):
         self.photo_input = ImageTk.PhotoImage(image=self.cam)
         self.image_label1.configure(image=self.photo_input)
         self.image_label1.after(20, self.start_cam)
+        if(time.localtime().tm_sec%5==0):
+            cv2.imwrite("sa.png", self.img)
         self.button_3.configure(text="Stop Camera", command=self.stop_cam)
 
     def saveFile(self):
