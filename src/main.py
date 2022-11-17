@@ -245,7 +245,11 @@ class App(customtkinter.CTk):
                 if('result.png' in os.listdir(dir_path)):
                     print("ada gambar")
                 else :
-                    print("wajah ga terdeteksi")
+                      # gambar tidak tersedia
+                    # print("wajah ga terdeteksi")
+                    image_none = Image.open(PATH + "..\\..\\image\\nf.jpg")
+                    self.photo_closest = ImageTk.PhotoImage(image_none)
+                    self.image_label2.configure(image=self.photo_closest)
 
         else:
             image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
