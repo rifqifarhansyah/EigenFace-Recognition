@@ -1,8 +1,9 @@
 import os
 import cv2
 import numpy as np
-from eigenface import eigenfaces
+from eigenfaces import *
 from PIL import Image
+
 
 # construct the argument parser and parse the arguments
 # ap = argparse.ArgumentParser()
@@ -48,7 +49,7 @@ from PIL import Image
 # C = np.zeros((3,3))
 # A = np.array([[1,0,0],[1,4,1],[0,0,1]])
 # b = np.array([0,24,0])
-x = 2
+# x = 2
 # count = 0
 # for i in range(1) :
 #     C[i][i] = A[1][count]
@@ -59,36 +60,42 @@ x = 2
 import time
 start_time = time.time()
 
-image_input = cv2.imread("test/Input/593.png.png", 0)
-dirDataSet = "test/Input/Input_DataSet"
 
-# *** find the normalized of Data Set *** 
-trainingFaces = eigenfaces.getTrainingFaces(dirDataSet)
 
-# *** convert test image to vector ***
-matrixImage = np.asarray(image_input) # NOT FIX
-vectorImage = eigenfaces.getVectorImage(matrixImage)
-print("processing.. 5%")
+# image_input = cv2.imread("test/Input/593.png.png", 0)
+# dirDataSet = "test/Input/Input_DataSet"
 
-# *** find best Eigen Vector of DataSet ***
-bestEigenVector = eigenfaces.getBestEigenFaces(trainingFaces)
-print("processing.. 35%")
+# # *** find the normalized of Data Set *** 
+# trainingFaces = eigenfaces.getTrainingFaces(dirDataSet)
 
-# *** find the linear combination of bestEigenVector from test image ***
-linerCombination = eigenfaces.getLinComOfEigVector(bestEigenVector, vectorImage)
+# # *** convert test image to vector ***
+# matrixImage = np.asarray(image_input) # NOT FIX
+# vectorImage = eigenfaces.getVectorImage(matrixImage)
+# print("processing.. 5%")
 
-# *** find matrix of coeff LinearCombination ***
-matrixLinCom = eigenfaces.getLinComMatrix(bestEigenVector, trainingFaces)
-minimumDistance = eigenfaces.getMinimumDistance(linerCombination, matrixLinCom)
-print("processing.. 95%\n")
+# # *** find best Eigen Vector of DataSet ***
+# bestEigenVector = eigenfaces.getBestEigenFaces(trainingFaces)
+# print("processing.. 35%")
 
-# *** tolerance value ***
-toleranceValue = 2
-print(f"the minimum distance : {minimumDistance} \n")
-print(f"The closest image filepath : ")
-if (minimumDistance < toleranceValue) :
-        imagefile = eigenfaces.getClosestImage(dirDataSet, matrixLinCom, linerCombination)
-        print(imagefile)
+# # *** find the linear combination of bestEigenVector from test image ***
+# linerCombination = eigenfaces.getLinComOfEigVector(bestEigenVector, vectorImage)
+
+# # *** find matrix of coeff LinearCombination ***
+# matrixLinCom = eigenfaces.getLinComMatrix(bestEigenVector, trainingFaces)
+# minimumDistance = eigenfaces.getMinimumDistance(linerCombination, matrixLinCom)
+# print("processing.. 95%\n")
+
+# # matrixLinCom.tofile('test2.dat')
+# np.savetxt("data3.csv", matrixLinCom,
+#               delimiter = ",")
+
+# # *** tolerance value ***
+# toleranceValue = 2
+# print(f"the minimum distance : {minimumDistance} \n")
+# print(f"The closest image filepath : ")
+# if (minimumDistance < toleranceValue) :
+#         imagefile = eigenfaces.getClosestImage(dirDataSet, matrixLinCom, linerCombination)
+#         print(imagefile)
 
 end_time = time.time()
 

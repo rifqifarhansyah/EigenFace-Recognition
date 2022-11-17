@@ -74,7 +74,7 @@ def InputFolderWithCrop(path,output): #input folder dengan wajah sudah di crop
             # print(path+"/"+listfile)
             if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
                 # isExist = os.path.exists(pathname+'/'+listfile)
-                croppicture(path+"/"+listfile,output+"//"+str(listfile)+".png")
+                croppicture(path+"/"+listfile,output+"//"+str(listfile))
             else :
                 InputFolderWithCrop(pathname+"/"+listfile)
 
@@ -107,7 +107,13 @@ def copyFolder(path,output):
             # print(path+"/"+listfile)
             if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
                 # isExist = os.path.exists(pathname+'/'+listfile)
-                shutil.copyfile(path+"/"+listfile,output+"\\"+str(listfile)+".png")
+                shutil.copyfile(path+"/"+listfile,output+"\\"+str(listfile))
                 # croppicture(path+"/"+listfile,output++str(listfile)+".png")
             else :
                 copyFolder(pathname+"/"+listfile,output)
+
+def deleteFileinFolder(path):
+    for path, currentDirectory, files in os.walk(path):
+        for listfile in files:
+            print(listfile)
+            os.remove(path+"\\"+listfile)

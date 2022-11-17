@@ -1,6 +1,9 @@
 import os
 from imageprocessing import *
-InputFolderWithoutCrop("test/Data_set/pins_amber heard","test/User_Dataset")
+# InputFolderWithoutCrop("test/Data_set/pins_amber heard","test/User_Dataset")
+# deleteFileinFolder("test\Coba_coba\kita")
+# deleteFileinFolder("test\\Input\\User_DataSet")
+InputFolderWithCrop("D:\\fotoriz","D:\\resfoto")
 # arr=os.listdir("test//Data_Set")
 # print(arr)
 # # image=cv2.imread("D:\Kuliah\Semester 3\IF2123 Aljabar Linier dan Geometri\Algeo02-21099\\test\Data_Set\pins_Anne Hathaway\Anne Hathaway82_482.jpg")

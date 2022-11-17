@@ -125,7 +125,8 @@ def getLinComOfEigVector(bestEigenVectorsOfCov, imageVectorInput) :
     """
     x = bestEigenVectorsOfCov
     y = np.transpose(imageVectorInput)
-    linCom = np.transpose([np.linalg.lstsq(x, y[0])[0]])
+    rcond = None
+    linCom = np.transpose([np.linalg.lstsq(x, y[0], rcond=None)[0]])
     return linCom
 
 def getLinComMatrix(bestEigenVector, normalizedDataSet) :

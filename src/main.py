@@ -173,47 +173,54 @@ class App(customtkinter.CTk):
         self.optionmenu_1.set("Light")
 
     def open_file_dataset(self): # open file dialog for dataset
+        imageprocessing.deleteFileinFolder("test\\Input\\User_DataSet")
+        imageprocessing.deleteFileinFolder("test\\Input\\live\\csv_file")
         self.dataset_file = filedialog.askdirectory()
+        imageprocessing.copyFolder(self.dataset_file, "test\\Input\\User_DataSet")
+        driver.getTraining()
 
     def open_file_image(self): # open file dialog for image
-        self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("png files","*.png"), ("jpg files","*.jpg"), ("jpeg files","*.jpeg")))
-        start = time.time()
-        file = open(self.filepath_image, encoding="latin1")
-        image_input = Image.open(f"{self.filepath_image}")
-        self.image1 = image_input
-        width, height = image_input.size
-        if(width == height): 
-            image_input = image_input
-        offset = abs(width - height) // 2
-        if(width > height):
-            image_input = image_input.crop([offset, 0, width - offset, height]) # crop image
-        else:
-            image_input = image_input.crop([0, offset, width, height - offset])
-        image_input = image_input.resize((500, 500), Image.ANTIALIAS) # resize the square image
-        self.photo_input = ImageTk.PhotoImage(image_input) # convert to PhotoImage
-        self.image_label1.configure(image=self.photo_input)
-        imageprocessing.InputFolderWithoutCrop(self)
-        self.path = driver.computeFaceRecognition(self.image1)
-        self.image2 = Image.open(f"{self.path}")
-        self.image2 = self.image2.resize((500, 500), Image.ANTIALIAS) # resize the square image
-        self.photo_closest = ImageTk.PhotoImage(self.image2)
-        self.image_label2.configure(image=self.photo_closest)
-        end = time.time()
-        executionTime = round((end - start)*100)
-        print(executionTime)
-        ms = executionTime % 100
-        executionTime = executionTime // 100
-        if(executionTime<600):
-            if(executionTime%60<10):
-                self.label_4.configure(text=f"0{(executionTime//60):.0f}:0{(executionTime%60):.0f}:{ms}")
+        if len(os.listdir(r"test\\Input\\live\\csv_file")) == 0 :
+            Warning
+        else :
+            self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("png files","*.png"), ("jpg files","*.jpg"), ("jpeg files","*.jpeg")))
+            start = time.time()
+            file = open(self.filepath_image, encoding="latin1")
+            image_input = Image.open(f"{self.filepath_image}")
+            self.image1 = image_input
+            width, height = image_input.size
+            if(width == height): 
+                image_input = image_input
+            offset = abs(width - height) // 2
+            if(width > height):
+                image_input = image_input.crop([offset, 0, width - offset, height]) # crop image
             else:
-                self.label_4.configure(text=f"0{(executionTime//60):.0f}:{(executionTime%60):.0f}:{ms}")
-        elif(executionTime>=600):
-            if(executionTime%60<10):
-                self.label_4.configure(text=f"{(executionTime//60):.0f}:0{(executionTime%60):.0f}:{ms}")
-            else:
-                self.label_4.configure(text=f"{(executionTime//60):.0f}:{(executionTime%60):.0f}:{ms}")
-        file.close()
+                image_input = image_input.crop([0, offset, width, height - offset])
+            image_input = image_input.resize((500, 500), Image.ANTIALIAS) # resize the square image
+            self.photo_input = ImageTk.PhotoImage(image_input) # convert to PhotoImage
+            self.image_label1.configure(image=self.photo_input)
+            imageprocessing.InputFolderWithoutCrop(self)
+            self.path = driver.generateClosestImage(self.image1)
+            self.image2 = Image.open(f"{self.path}")
+            self.image2 = self.image2.resize((500, 500), Image.ANTIALIAS) # resize the square image
+            self.photo_closest = ImageTk.PhotoImage(self.image2)
+            self.image_label2.configure(image=self.photo_closest)
+            end = time.time()
+            executionTime = round((end - start)*100)
+            print(executionTime)
+            ms = executionTime % 100
+            executionTime = executionTime // 100
+            if(executionTime<600):
+                if(executionTime%60<10):
+                    self.label_4.configure(text=f"0{(executionTime//60):.0f}:0{(executionTime%60):.0f}:{ms}")
+                else:
+                    self.label_4.configure(text=f"0{(executionTime//60):.0f}:{(executionTime%60):.0f}:{ms}")
+            elif(executionTime>=600):
+                if(executionTime%60<10):
+                    self.label_4.configure(text=f"{(executionTime//60):.0f}:0{(executionTime%60):.0f}:{ms}")
+                else:
+                    self.label_4.configure(text=f"{(executionTime//60):.0f}:{(executionTime%60):.0f}:{ms}")
+            file.close()
 
     def print_image(self): # print image
         self.frame_info1 = customtkinter.CTkFrame(master=self.frame_right)
@@ -230,17 +237,12 @@ class App(customtkinter.CTk):
     def on_closing(self, event=0):
         self.destroy()
 
-    def get_training(self):
-        training_dataset = 
-        print("SEPELE DEKKKK")
-
     def openCam(self):
         if not self.status_cam:
             self.cap = cv2.VideoCapture(2)
             self.camera_status = "ON"
             self.status_cam = True
         if self.switch_1.get() == 1:
-            self.button_3.configure(text="Get Training", width=140, height=28, command=self.get_training)
             self.img = self.cap.read()[1]
             self.imgBGR = cv2.cvtColor(self.img, cv2.COLOR_BGR2RGB)
             self.cam = Image.fromarray(self.imgBGR)
@@ -248,27 +250,28 @@ class App(customtkinter.CTk):
             self.image_label1.configure(image=self.photo_input)
             self.image_label1.after(20, self.openCam)
             if(time.localtime().tm_sec%20==0):
-                dir_path = r'test\\live\\result'
+                dir_path = r'test\\Input\\live\\result'
                 if("result.png" in os.listdir(dir_path)):
-                    os.remove("test\\live\\result\\result.png")
-                cv2.imwrite("test\live\input\input.png", self.img)
-                imageprocessing.croppicture("test\live\input\input.png", "test\live\\result\\result.png")
+                    os.remove("test\\Input\\live\\result\\result.png")
+                cv2.imwrite("test\Input\live\input\input.png", self.img)
+                imageprocessing.croppicture("test\Input\live\input\input.png", "test\Input\\live\\result\\result.png")
                 if('result.png' in os.listdir(dir_path)):
-                    image_result = Image.open("test/live/result/result.png")
-                    image_matched = Image.open(driver.computeFaceRecognition(image_result))
-                    self.photo_closest = ImageTk.PhotoImage(image_matched)
+                    self.image_cropped = Image.open("test//Input//live//result//result.png")
+                    self.path_matched = driver.generateClosestImage(self.image_cropped)
+                    self.mage_matched = Image.open(self.path_matched)
+                    self.photo_closest = ImageTk.PhotoImage(self.image_matched)
                     self.image_label2.configure(image=self.photo_closest)
                 else :
                       # gambar tidak tersedia
                     # print("wajah ga terdeteksi")
-                    image_none = Image.open(PATH + "..\\..\\image\\nf.jpg")
-                    self.photo_closest = ImageTk.PhotoImage(image_none)
+                    self.image_none = Image.open(PATH + "..\\..\\image\\nf.jpg")
+                    self.photo_closest = ImageTk.PhotoImage(self.image_none)
                     self.image_label2.configure(image=self.photo_closest)
 
         else:
             self.button_3.configure(text="", width=0, height=0)
-            image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
-            self.photo_input = ImageTk.PhotoImage(image_none)
+            self.image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
+            self.photo_input = ImageTk.PhotoImage(self.image_none)
             self.image_label1.configure(image=self.photo_input)
             self.status_cam = False
             self.camera_status = "OFF"
