@@ -231,7 +231,6 @@ class App(customtkinter.CTk):
         self.destroy()
 
     def get_training(self):
-        training_dataset = 
         print("SEPELE DEKKKK")
 
     def openCam(self):
