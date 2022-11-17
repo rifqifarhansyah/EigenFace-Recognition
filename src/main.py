@@ -121,7 +121,7 @@ class App(customtkinter.CTk):
                                                 text="",
                                                 width=0,
                                                 height=0)
-        self.button_3.grid(row=8, column=0, pady=5, padx=10)
+        self.button_3.grid(row=8, column=0, pady=10, padx=20)
 
         self.label_5 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Result",
@@ -239,8 +239,8 @@ class App(customtkinter.CTk):
             self.camera_status = "ON"
             self.status_cam = True
         if self.switch_1.get() == 1:
-            self.button_3.configure(text="Get Training", width=140, height=28, command=self.get_training)
             self.img = self.cap.read()[1]
+            self.button_3.configure(text="Get Training", width=140, height=28, command=self.get_training)
             self.imgBGR = cv2.cvtColor(self.img, cv2.COLOR_BGR2RGB)
             self.cam = Image.fromarray(self.imgBGR)
             self.photo_input = ImageTk.PhotoImage(image=self.cam)
