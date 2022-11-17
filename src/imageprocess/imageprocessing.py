@@ -116,4 +116,8 @@ def deleteFileinFolder(path):
     for path, currentDirectory, files in os.walk(path):
         for listfile in files:
             print(listfile)
+<<<<<<< HEAD
             os.remove(path+"\\"+listfile)
+=======
+            # os.remove(path+"\\"+listfile)
+>>>>>>> b4764ba03cc8e4c9223eff300679aac91477c4f2
