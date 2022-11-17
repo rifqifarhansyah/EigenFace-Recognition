@@ -231,6 +231,7 @@ class App(customtkinter.CTk):
         self.destroy()
 
     def get_training(self):
+        training_dataset = 
         print("SEPELE DEKKKK")
 
     def openCam(self):
@@ -253,9 +254,16 @@ class App(customtkinter.CTk):
                 cv2.imwrite("test\live\input\input.png", self.img)
                 imageprocessing.croppicture("test\live\input\input.png", "test\live\\result\\result.png")
                 if('result.png' in os.listdir(dir_path)):
-                    print("ada gambar")
+                    image_result = Image.open("test/live/result/result.png")
+                    image_matched = Image.open(driver.computeFaceRecognition(image_result))
+                    self.photo_closest = ImageTk.PhotoImage(image_matched)
+                    self.image_label2.configure(image=self.photo_closest)
                 else :
-                    print("wajah ga terdeteksi")
+                      # gambar tidak tersedia
+                    # print("wajah ga terdeteksi")
+                    image_none = Image.open(PATH + "..\\..\\image\\nf.jpg")
+                    self.photo_closest = ImageTk.PhotoImage(image_none)
+                    self.image_label2.configure(image=self.photo_closest)
 
         else:
             self.button_3.configure(text="", width=0, height=0)
