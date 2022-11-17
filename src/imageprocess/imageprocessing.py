@@ -111,3 +111,9 @@ def copyFolder(path,output):
                 # croppicture(path+"/"+listfile,output++str(listfile)+".png")
             else :
                 copyFolder(pathname+"/"+listfile,output)
+
+def deleteFileinFolder(path):
+    for path, currentDirectory, files in os.walk(path):
+        for listfile in files:
+            print(listfile)
+            # os.remove(path+"\\"+listfile)
