@@ -1,9 +1,8 @@
 import os
 import cv2
 import numpy as np
-from eigenfaces import *
+from eigenface import eigenfaces
 from PIL import Image
-import sys
 
 # construct the argument parser and parse the arguments
 # ap = argparse.ArgumentParser()
@@ -60,27 +59,27 @@ x = 2
 import time
 start_time = time.time()
 
-image_input = cv2.imread("test/gray/CR56.png", 0)
-dirDataSet = "test/gray"
+image_input = cv2.imread("test/Input/593.png.png", 0)
+dirDataSet = "test/Input/Input_DataSet"
 
 # *** find the normalized of Data Set *** 
-trainingFaces = getTrainingFaces(dirDataSet)
+trainingFaces = eigenfaces.getTrainingFaces(dirDataSet)
 
 # *** convert test image to vector ***
 matrixImage = np.asarray(image_input) # NOT FIX
-vectorImage = getVectorImage(matrixImage)
+vectorImage = eigenfaces.getVectorImage(matrixImage)
 print("processing.. 5%")
 
 # *** find best Eigen Vector of DataSet ***
-bestEigenVector = getBestEigenFaces(trainingFaces)
+bestEigenVector = eigenfaces.getBestEigenFaces(trainingFaces)
 print("processing.. 35%")
 
 # *** find the linear combination of bestEigenVector from test image ***
-linerCombination = getLinComOfEigVector(bestEigenVector, vectorImage)
+linerCombination = eigenfaces.getLinComOfEigVector(bestEigenVector, vectorImage)
 
 # *** find matrix of coeff LinearCombination ***
-matrixLinCom = getLinComMatrix(bestEigenVector, trainingFaces)
-minimumDistance = getMinimumDistance(linerCombination, matrixLinCom)
+matrixLinCom = eigenfaces.getLinComMatrix(bestEigenVector, trainingFaces)
+minimumDistance = eigenfaces.getMinimumDistance(linerCombination, matrixLinCom)
 print("processing.. 95%\n")
 
 # *** tolerance value ***
@@ -88,7 +87,7 @@ toleranceValue = 2
 print(f"the minimum distance : {minimumDistance} \n")
 print(f"The closest image filepath : ")
 if (minimumDistance < toleranceValue) :
-        imagefile = getClosestImage(dirDataSet, matrixLinCom, linerCombination)
+        imagefile = eigenfaces.getClosestImage(dirDataSet, matrixLinCom, linerCombination)
         print(imagefile)
 
 end_time = time.time()

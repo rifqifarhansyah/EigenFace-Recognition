@@ -47,7 +47,7 @@ class App(customtkinter.CTk):
         global image_input
         super().__init__()
 
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(2)
         self.status_cam = True
         self.title("Face Recognition GUI")
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
@@ -231,11 +231,12 @@ class App(customtkinter.CTk):
         self.destroy()
 
     def get_training(self):
+        training_dataset = 
         print("SEPELE DEKKKK")
 
     def openCam(self):
         if not self.status_cam:
-            self.cap = cv2.VideoCapture(0)
+            self.cap = cv2.VideoCapture(2)
             self.camera_status = "ON"
             self.status_cam = True
         if self.switch_1.get() == 1:
@@ -253,7 +254,10 @@ class App(customtkinter.CTk):
                 cv2.imwrite("test\live\input\input.png", self.img)
                 imageprocessing.croppicture("test\live\input\input.png", "test\live\\result\\result.png")
                 if('result.png' in os.listdir(dir_path)):
-                    print("ada gambar")
+                    image_result = Image.open("test/live/result/result.png")
+                    image_matched = Image.open(driver.computeFaceRecognition(image_result))
+                    self.photo_closest = ImageTk.PhotoImage(image_matched)
+                    self.image_label2.configure(image=self.photo_closest)
                 else :
                       # gambar tidak tersedia
                     # print("wajah ga terdeteksi")
