@@ -117,24 +117,30 @@ class App(customtkinter.CTk):
                                                 text_font=("Roboto Medium", -16))  # font name and size in px
         self.label_spacing.grid(row=7, column=0, pady=5, padx=10)
 
+        self.button_3 = customtkinter.CTkButton(master=self.frame_left,
+                                                text="",
+                                                width=0,
+                                                height=0)
+        self.button_3.grid(row=8, column=0, pady=5, padx=10)
+
         self.label_5 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Result",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_5.grid(row=8, column=0, pady=5, padx=10)
+        self.label_5.grid(row=9, column=0, pady=5, padx=10)
         
 
         self.button_5 = customtkinter.CTkButton(master=self.frame_left,
                                                 text="Download",
                                                 command=self.formating_output_file)
-        self.button_5.grid(row=9, column=0, pady=10, padx=20)
+        self.button_5.grid(row=10, column=0, pady=10, padx=20)
 
         self.label_mode = customtkinter.CTkLabel(master=self.frame_left, text="Appearance Mode:")
-        self.label_mode.grid(row=10, column=0, pady=0, padx=20, sticky="w")
+        self.label_mode.grid(row=11, column=0, pady=0, padx=20, sticky="w")
 
         self.optionmenu_1 = customtkinter.CTkOptionMenu(master=self.frame_left,
                                                         values=["Light", "Dark"],
                                                         command=self.change_appearance_mode)
-        self.optionmenu_1.grid(row=11, column=0, pady=10, padx=20, sticky="w")
+        self.optionmenu_1.grid(row=12, column=0, pady=10, padx=20, sticky="w")
 
         # ============ frame_right ============
 
@@ -224,12 +230,16 @@ class App(customtkinter.CTk):
     def on_closing(self, event=0):
         self.destroy()
 
+    def get_training(self):
+        print("SEPELE DEKKKK")
+
     def openCam(self):
         if not self.status_cam:
             self.cap = cv2.VideoCapture(0)
             self.camera_status = "ON"
             self.status_cam = True
         if self.switch_1.get() == 1:
+            self.button_3.configure(text="Get Training", width=140, height=28, command=self.get_training)
             self.img = self.cap.read()[1]
             self.imgBGR = cv2.cvtColor(self.img, cv2.COLOR_BGR2RGB)
             self.cam = Image.fromarray(self.imgBGR)
@@ -248,6 +258,7 @@ class App(customtkinter.CTk):
                     print("wajah ga terdeteksi")
 
         else:
+            self.button_3.configure(text="", width=0, height=0)
             image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
             self.photo_input = ImageTk.PhotoImage(image_none)
             self.image_label1.configure(image=self.photo_input)
