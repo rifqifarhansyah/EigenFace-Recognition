@@ -22,7 +22,7 @@ def croppicture(path,output): #input picture dengan wajah belum di crop
         height = int(image.shape[0] * scale_percent / image.shape[0])
         dim = (width, height)
         image=cv2.resize(faces,dim,interpolation=cv2.INTER_AREA)
-        cv2.imwrite(output, faces)
+        cv2.imwrite(output, image)
         
 def gray(path,output): # menjadikan gambar menjadi grayscale dan resize
     image = cv2.imread(path)

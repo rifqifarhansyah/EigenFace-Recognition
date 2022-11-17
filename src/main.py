@@ -236,6 +236,17 @@ class App(customtkinter.CTk):
             self.photo_input = ImageTk.PhotoImage(image=self.cam)
             self.image_label1.configure(image=self.photo_input)
             self.image_label1.after(20, self.openCam)
+            if(time.localtime().tm_sec%20==0):
+                dir_path = r'test\\live\\result'
+                if("result.png" in os.listdir(dir_path)):
+                    os.remove("test\\live\\result\\result.png")
+                cv2.imwrite("test\live\input\input.png", self.img)
+                imageprocessing.croppicture("test\live\input\input.png", "test\live\\result\\result.png")
+                if('result.png' in os.listdir(dir_path)):
+                    print("ada gambar")
+                else :
+                    print("wajah ga terdeteksi")
+
         else:
             image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
             self.photo_input = ImageTk.PhotoImage(image_none)
