@@ -48,6 +48,7 @@ class App(customtkinter.CTk):
         super().__init__()
 
         self.cap = cv2.VideoCapture(0)
+        self.status_cam = True
         self.title("Face Recognition GUI")
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
         self.iconphoto(False, PhotoImage(file=f"{PATH}..\\..\\image\\icon.png"))
@@ -96,10 +97,10 @@ class App(customtkinter.CTk):
                                                 command=self.open_file_image)
         self.button_2.grid(row=3, column=0, pady=10, padx=20)
 
-        self.button_3 = customtkinter.CTkButton(master=self.frame_left,
-                                                text="Open Camera",
-                                                command=self.start_cam)
-        self.button_3.grid(row=4, column=0, pady=10, padx=20)
+        self.switch_1 = customtkinter.CTkSwitch(master=self.frame_left,
+                                                text="Camera",
+                                                command=self.openCam)
+        self.switch_1.grid(row=4, column=0, pady=10, padx=20)
 
         self.label_3 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Execution Time:",
@@ -222,6 +223,27 @@ class App(customtkinter.CTk):
 
     def on_closing(self, event=0):
         self.destroy()
+
+    def openCam(self):
+        if not self.status_cam:
+            self.cap = cv2.VideoCapture(0)
+            self.camera_status = "ON"
+            self.status_cam = True
+        if self.switch_1.get() == 1:
+            self.img = self.cap.read()[1]
+            self.imgBGR = cv2.cvtColor(self.img, cv2.COLOR_BGR2RGB)
+            self.cam = Image.fromarray(self.imgBGR)
+            self.photo_input = ImageTk.PhotoImage(image=self.cam)
+            self.image_label1.configure(image=self.photo_input)
+            self.image_label1.after(20, self.openCam)
+        else:
+            image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
+            self.photo_input = ImageTk.PhotoImage(image_none)
+            self.image_label1.configure(image=self.photo_input)
+            self.status_cam = False
+            self.camera_status = "OFF"
+            self.cap.release()
+            return
 
     # Defining stop_cam() to stop WEBCAM Preview
     def stop_cam(self):
