@@ -11,31 +11,38 @@ def computeFaceRecognition(image_input):
 
     dirDataSet = "test/Input/User_DataSet"
 
+    allImage = np.empty((256*256,0), float)
+    for (dirPath, dirNames, file) in os.walk(dirDataSet):
+        for fileNames in file :
+                tempPath = os.path.join(dirPath, fileNames)
+                image = cv2.imread(tempPath, 0) # foto grayscale yang udah 256x256
+                allImage= np.column_stack((allImage, image.reshape(256*256, 1)))
+
+    
     # *** find the normalized of Data Set ***
-    trainingFaces = eigenfaces.getTrainingFaces(dirDataSet)
+    mean_subtracted = allImage - allImage.mean(axis=1, keepdims=True)
 
     # *** convert test image to vector ***
-    matrixImage = np.asarray(image_input) 
-    vectorImage = eigenfaces.getVectorImage(matrixImage)
+    vectorImage = image_input.reshape(256*256, 1)
     print("processing.. 5%")
 
     # *** find best Eigen Vector of DataSet ***
-    bestEigenVector = eigenfaces.getBestEigenFaces(trainingFaces)
+    bestEigenFaces = eigenfaces.getBestEigenFaces(mean_subtracted)
     print("processing.. 35%")
 
     # *** find the linear combination of bestEigenVector from test image ***
-    linerCombination = eigenfaces.getLinComOfEigVector(bestEigenVector, vectorImage)
+    inputCoordinate = eigenfaces.getLinComOfEigVector(bestEigenFaces, vectorImage)
 
     # *** find matrix of coeff LinearCombination ***
-    matrixLinCom = eigenfaces.getLinComMatrix(bestEigenVector, trainingFaces)
-    minimumDistance = eigenfaces.getMinimumDistance(linerCombination, matrixLinCom)
+    allImageCoordinate = eigenfaces.getLinComMatrix(bestEigenFaces, mean_subtracted)
+    minimumDistance = eigenfaces.getMinimumDistance(inputCoordinate, allImageCoordinate)
     print("processing.. 70%")
 
     # *** tolerance value ***
     toleranceValue = 1
     print(minimumDistance)
     if (minimumDistance < toleranceValue) :
-        imagefile = eigenfaces.getClosestImage(dirDataSet, matrixLinCom, linerCombination)
+        imagefile = eigenfaces.getClosestImage(dirDataSet, allImageCoordinate,inputCoordinate)
         return(imagefile)
     else :
         return("image/nf.jpg")
@@ -43,44 +50,52 @@ def computeFaceRecognition(image_input):
 def getTraining() :
     dirDataSet = "test/Input/User_DataSet"
 
-    # *** find the normalized of Data Set ***
-    trainingFaces = eigenfaces.getTrainingFaces(dirDataSet)
+    allImage = np.empty((256*256,0), float)
+    for (dirPath, dirNames, file) in os.walk(dirDataSet):
+        for fileNames in file :
+                tempPath = os.path.join(dirPath, fileNames)
+                image = cv2.imread(tempPath, 0) # foto grayscale yang udah 256x256
+                allImage= np.column_stack((allImage, image.reshape(256*256, 1)))
 
+    
+    # *** find the normalized of Data Set ***
+
+    mean_subtracted = allImage - allImage.mean(axis=1, keepdims=True)
+
+    print("processing EigenFaces..")
     # *** find best Eigen Vector of DataSet ***
-    bestEigenVector = eigenfaces.getBestEigenFaces(trainingFaces)
+    bestEigenVector = eigenfaces.getBestEigenFaces(mean_subtracted )
 
     # *** find matrix of coeff LinearCombination ***
-    matrixLinCom = eigenfaces.getLinComMatrix(bestEigenVector, trainingFaces)
+    allImageCoordinate = eigenfaces.getLinComMatrix(bestEigenVector, mean_subtracted )
 
-    np.savetxt("test\\Input\\live\\csv_file\\MatrixLinCom.csv", matrixLinCom,
-              delimiter = ",")
+    np.savetxt("test\\Input\\live\\csv_file\\MatrixLinCom.csv", allImageCoordinate, delimiter = ",")
 
-    np.savetxt("test\\Input\\live\\csv_file\\bestEigenVector.csv", bestEigenVector,
-              delimiter = ",")
+    np.savetxt("test\\Input\\live\\csv_file\\bestEigenVector.csv", bestEigenVector, delimiter = ",")
+
     print("Training udah selesai")
 
-def generateClosestImage(image_input) :
-    dirDataSet = "test/Input/User_DataSet"
+def generateClosestImage(image_input, dirInputDataSet) :
 
     bestEigenVector = np.loadtxt("test\\Input\\live\\csv_file\\bestEigenVector.csv", delimiter=",", dtype=float)
     
-    matrixLinCom = np.loadtxt("test\\Input\\live\\csv_file\\MatrixLinCom.csv", delimiter = ",", dtype=float)
+    allImageCoordinate = np.loadtxt("test\\Input\\live\\csv_file\\MatrixLinCom.csv", delimiter = ",", dtype=float)
 
     # *** convert test image to vector ***
-    matrixImage = np.asarray(image_input)
-    vectorImage = eigenfaces.getVectorImage(matrixImage)
+    vectorImage = image_input.reshape(256*256, 1)
 
     # *** find the linear combination of bestEigenVector from test image ***
-    linerCombination = eigenfaces.getLinComOfEigVector(bestEigenVector, vectorImage)
+    inputCoordinate = eigenfaces.getLinComOfEigVector(bestEigenVector, vectorImage)
 
-    minimumDistance = eigenfaces.getMinimumDistance(linerCombination, matrixLinCom)
+    minimumDistance = eigenfaces.getMinimumDistance(inputCoordinate, allImageCoordinate)
 
     # *** tolerance value ***
-    toleranceValue = 5
+    toleranceValue = 2
     print(minimumDistance)
     if (minimumDistance < toleranceValue) :
         print("dapat image")
-        imagefile = eigenfaces.getClosestImage(dirDataSet, matrixLinCom, linerCombination)
+        imagefile = eigenfaces.getClosestImage(dirInputDataSet,allImageCoordinate, inputCoordinate)
+        print(imagefile)
         return(imagefile)
     else :
         print("ga dapat")

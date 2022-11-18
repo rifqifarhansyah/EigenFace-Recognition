@@ -46,12 +46,12 @@ def adjustOneImage(image): # menjadikan gambar menjadi grayscale dan resize
     gray_cek=-1
     # if(image.shape[2]!=12312):
     #     gray_cek=0
-    print(len(image.shape))
+    # print(len(image.shape))
     width = int(image.shape[1] * scale_percent / image.shape[1])
     height = int(image.shape[0] * scale_percent / image.shape[0])
     dim = (width, height)
-    print(dim)
-    # image=cv2.resize(image,dim,interpolation=cv2.INTER_AREA)
+    # print(dim)
+    image=cv2.resize(image,dim,interpolation=cv2.INTER_AREA)
     # # # # print(dimensions)
 
     # # # # Use the cvtColor() function to grayscale the image

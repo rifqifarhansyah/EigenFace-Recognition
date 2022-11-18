@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import filedialog
+from tkinter import messagebox
 from PyQt5 import *
 from fpdf import FPDF
 from eigenface import driver
@@ -36,7 +37,6 @@ BLACK = "black"
 PATH = os.path.dirname(os.path.realpath(__file__))
 
 # Defining ShowFeed() function to display webcam feed in the cameraLabel;
-    
 
 class App(customtkinter.CTk):
 
@@ -177,10 +177,12 @@ class App(customtkinter.CTk):
         self.dataset_file = filedialog.askdirectory()
         imageprocessing.InputFolderWithoutCrop(self.dataset_file)
         driver.getTraining()
+        messagebox.showinfo("Success", "Dataset Uploaded Successfully !")
+        # messagebox.showinfo("SUCCESS", "You dataset has been trained!", fg="red")
 
     def open_file_image(self): # open file dialog for image
         if len(os.listdir(r"test\\Input\\live\\csv_file")) == 0 :
-            Warning
+            messagebox.showerror("Error", "Please Upload Dataset First")
         else :
             self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("png files","*.png"), ("jpg files","*.jpg"), ("jpeg files","*.jpeg")))
             print("self filpath",self.filepath_image)
@@ -203,7 +205,7 @@ class App(customtkinter.CTk):
             self.photo_input = ImageTk.PhotoImage(self.image_input) # convert to PhotoImage
             self.image_label1.configure(image=self.photo_input)
             self.image_adjusted = imageprocessing.adjustOneImage(self.image1)
-            self.path = driver.generateClosestImage(self.image_adjusted)
+            self.path = driver.generateClosestImage(self.image_adjusted, self.dataset_file)
             self.image2 = Image.open(f"{self.path}")
             self.image2 = self.image2.resize((500, 500), Image.ANTIALIAS) # resize the square image
             self.photo_closest = ImageTk.PhotoImage(self.image2)
@@ -247,7 +249,6 @@ class App(customtkinter.CTk):
             self.status_cam = True
         if self.switch_1.get() == 1:
             self.img = self.cap.read()[1]
-            self.button_3.configure(text="Get Training", width=140, height=28, command=self.get_training)
             self.imgBGR = cv2.cvtColor(self.img, cv2.COLOR_BGR2RGB)
             self.cam = Image.fromarray(self.imgBGR)
             self.photo_input = ImageTk.PhotoImage(image=self.cam)
@@ -258,13 +259,31 @@ class App(customtkinter.CTk):
                 if("result.png" in os.listdir(dir_path)):
                     os.remove("test\\Input\\live\\result\\result.png")
                 cv2.imwrite("test\Input\live\input\input.png", self.img)
+                self.filepath_image = ("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/live/input/input.png")
                 imageprocessing.croppicture("test\Input\live\input\input.png", "test\Input\\live\\result\\result.png")
                 if('result.png' in os.listdir(dir_path)):
+                    start_time_cam = time.time()
                     self.image_cropped = Image.open("test//Input//live//result//result.png")
                     self.image_cropped2 = np.asarray(self.image_cropped)
-                    self.path_matched = driver.generateClosestImage(self.image_cropped2)
-                    self.mage_matched = Image.open(self.path_matched)
+                    self.path = driver.generateClosestImage(self.image_cropped2, self.dataset_file)
+                    self.image_matched = Image.open(self.path)
+                    self.image_matched = self.image_matched.resize((500, 500), Image.ANTIALIAS) # resize the square image
                     self.photo_closest = ImageTk.PhotoImage(self.image_matched)
+                    end_time_cam = time.time()
+                    executionTime = round((end_time_cam - start_time_cam)*100)
+                    print(executionTime)
+                    ms = executionTime % 100
+                    executionTime = executionTime // 100
+                    if(executionTime<600):
+                        if(executionTime%60<10):
+                            self.label_4.configure(text=f"0{(executionTime//60):.0f}:0{(executionTime%60):.0f}:{ms}")
+                        else:
+                            self.label_4.configure(text=f"0{(executionTime//60):.0f}:{(executionTime%60):.0f}:{ms}")
+                    elif(executionTime>=600):
+                        if(executionTime%60<10):
+                            self.label_4.configure(text=f"{(executionTime//60):.0f}:0{(executionTime%60):.0f}:{ms}")
+                        else:
+                            self.label_4.configure(text=f"{(executionTime//60):.0f}:{(executionTime%60):.0f}:{ms}")
                     self.image_label2.configure(image=self.photo_closest)
                 else :
                       # gambar tidak tersedia
@@ -277,7 +296,9 @@ class App(customtkinter.CTk):
             self.button_3.configure(text="", width=0, height=0)
             self.image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
             self.photo_input = ImageTk.PhotoImage(self.image_none)
+            self.photo_closest = ImageTk.PhotoImage(self.image_none)
             self.image_label1.configure(image=self.photo_input)
+            self.image_label2.configure(image=self.photo_closest)
             self.status_cam = False
             self.camera_status = "OFF"
             self.cap.release()
