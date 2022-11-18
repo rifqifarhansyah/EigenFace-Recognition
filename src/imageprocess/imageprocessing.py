@@ -2,6 +2,7 @@ import cv2
 import os
 import time
 import shutil
+from PIL import Image
 
 def croppicture(path,output): #input picture dengan wajah belum di crop
     img = cv2.imread(path)
@@ -39,26 +40,51 @@ def gray(path,output): # menjadikan gambar menjadi grayscale dan resize
     
     cv2.imwrite(output,gray_image)
     
+def adjustOneImage(image): # menjadikan gambar menjadi grayscale dan resize
 
-def InputFolderWithoutCrop(self): #input folder dengan wajah sudah di crop
+    scale_percent = 256 # percent of original size
+    gray_cek=-1
+    # if(image.shape[2]!=12312):
+    #     gray_cek=0
+    print(len(image.shape))
+    width = int(image.shape[1] * scale_percent / image.shape[1])
+    height = int(image.shape[0] * scale_percent / image.shape[0])
+    dim = (width, height)
+    print(dim)
+    # image=cv2.resize(image,dim,interpolation=cv2.INTER_AREA)
+    # # # # print(dimensions)
+
+    # # # # Use the cvtColor() function to grayscale the image
+    if(len(image.shape)==3) :
+        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        return gray_image
+    else :
+        print("ga gray")
+        # gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        return image
+        
+    # print(gray_image.shape)
+
+def InputFolderWithoutCrop(dataset_file): #input folder dengan wajah sudah di crop
     # return all files as a list
-    self.path = self.dataset_file
-    self.output = 'test/User_DataSet'
-    self.pathname=self.path
+    path = dataset_file
+    output = 'test\\Input\\User_DataSet'
+    pathname=path
     # print(os.listdir(pathname))
     #apabila wajah belum di crop
-    for self.path, self.currentDirectory, self.files in os.walk(self.path):
-        for self.listfile in self.files:
+    for path, currentDirectory, files in os.walk(path):
+        for listfile in files:
             # print(path+"\\"+listfile)
             # print(files[:-3])
             # print(files)
-            # print(path+"/"+listfile)
-            if(self.listfile[-3:]=="jpg" or self.listfile[-3:]=="png" or self.listfile[-4:]=="jpeg"):
+            # print(path+"\\"+listfile)
+            if(listfile[-3:]=="jpg" or listfile[-3:]=="png" or listfile[-4:]=="jpeg"):
                 # isExist = os.path.exists(pathname+'/'+listfile)
                 # print(listfile)
-                gray(self.path+"/"+self.listfile,self.output+"//"+str(self.listfile)+".png")
+                print(output+"//"+str(listfile))
+                gray(path+"/"+listfile,output+"//"+str(listfile))
             else :
-                InputFolderWithoutCrop(self.pathname+"/"+self.listfile)
+                InputFolderWithoutCrop(pathname+"/"+listfile)
 
 
 def InputFolderWithCrop(path,output): #input folder dengan wajah sudah di crop
@@ -116,8 +142,4 @@ def deleteFileinFolder(path):
     for path, currentDirectory, files in os.walk(path):
         for listfile in files:
             print(listfile)
-<<<<<<< HEAD
             os.remove(path+"\\"+listfile)
-=======
-            # os.remove(path+"\\"+listfile)
->>>>>>> b4764ba03cc8e4c9223eff300679aac91477c4f2

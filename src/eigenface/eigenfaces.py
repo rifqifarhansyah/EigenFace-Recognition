@@ -118,6 +118,10 @@ def getBestEigenFaces(normalizedData) :
     
     return bestEigenVectorsOfCov
 
+# def displayEigenFaces () :
+#     bestEigenVector = np.loadtxt("test\\Input\\live\\csv_file\\bestEigenVector.csv", delimiter=",", dtype=float)
+#     for i in range(15) :
+        
 def getLinComOfEigVector(bestEigenVectorsOfCov, imageVectorInput) :
     """
     return the linear Combination of bestEigenVectorsOfCov from imageVectorInput
@@ -143,20 +147,20 @@ def getLinComMatrix(bestEigenVector, normalizedDataSet) :
     
     return CoefOfLinComMatrix
 
-def getMagnitude(vectorImage) :
-    """
-    return the magnitude of vectorImage
-    """
-    return math.sqrt(sum(pow(x, 2) for x in vectorImage))
+# def getMagnitude(vectorImage) :
+#     """
+#     return the magnitude of vectorImage
+#     """
+#     return math.sqrt(sum(pow(x, 2) for x in vectorImage))
 
 def getMinimumDistance(inputLinCom, CoefMatrix) :
     """
     return minimum distance from linear combination of input image 
     and linear combination of each image in data set
     """
-    minimum = minimum = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
+    minimum = minimum = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
     for i in range(len(CoefMatrix[0])) :
-        distance = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
+        distance = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
         if (distance < minimum) :
             minimum = distance
 
@@ -166,10 +170,10 @@ def getClosestImage (dirPath, CoefMatrix, inputLinCom) :
     """
     return filename of closest image in dataset
     """
-    minimum = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
+    minimum = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
     imageOrder = 1
     for i in range(len(CoefMatrix[0])) :
-        distance = getMagnitude(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
+        distance = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
         if (distance < minimum) :
             minimum = distance
             imageOrder = i + 1

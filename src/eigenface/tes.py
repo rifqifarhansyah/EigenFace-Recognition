@@ -1,7 +1,7 @@
 import os
 import cv2
 import numpy as np
-from eigenfaces import *
+# from eigenfaces import *
 from PIL import Image
 
 
@@ -57,8 +57,8 @@ from PIL import Image
 # print(C[0][0])
 # print(np.transpose([A[:,0]]))
 
-import time
-start_time = time.time()
+# import time
+# start_time = time.time()
 
 
 
@@ -97,14 +97,15 @@ start_time = time.time()
 #         imagefile = eigenfaces.getClosestImage(dirDataSet, matrixLinCom, linerCombination)
 #         print(imagefile)
 
-end_time = time.time()
+# end_time = time.time()
 
-print("\ntime execution : ", (end_time-start_time) * 10**3)
+# print("\ntime execution : ", (end_time-start_time) * 10**3)
 
 # window_name = 'image'
 # cv2.imshow(window_name, imagefile)
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
 
-
+v = np.array([[1], [2], [3]])
+print(np.linalg.norm(v))
 

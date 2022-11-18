@@ -76,7 +76,7 @@ def generateClosestImage(image_input) :
     minimumDistance = eigenfaces.getMinimumDistance(linerCombination, matrixLinCom)
 
     # *** tolerance value ***
-    toleranceValue = 1
+    toleranceValue = 5
     print(minimumDistance)
     if (minimumDistance < toleranceValue) :
         print("dapat image")

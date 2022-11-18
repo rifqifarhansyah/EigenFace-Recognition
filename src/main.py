@@ -5,7 +5,7 @@ from PyQt5 import *
 from fpdf import FPDF
 from eigenface import driver
 from imageprocess import imageprocessing
-
+import numpy as np
 
 import sys
 import datetime
@@ -44,7 +44,6 @@ class App(customtkinter.CTk):
     HEIGHT = 1200
 
     def __init__(self):
-        global image_input
         super().__init__()
 
         self.cap = cv2.VideoCapture(2)
@@ -176,7 +175,7 @@ class App(customtkinter.CTk):
         imageprocessing.deleteFileinFolder("test\\Input\\User_DataSet")
         imageprocessing.deleteFileinFolder("test\\Input\\live\\csv_file")
         self.dataset_file = filedialog.askdirectory()
-        imageprocessing.copyFolder(self.dataset_file, "test\\Input\\User_DataSet")
+        imageprocessing.InputFolderWithoutCrop(self.dataset_file)
         driver.getTraining()
 
     def open_file_image(self): # open file dialog for image
@@ -184,23 +183,27 @@ class App(customtkinter.CTk):
             Warning
         else :
             self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("png files","*.png"), ("jpg files","*.jpg"), ("jpeg files","*.jpeg")))
+            print("self filpath",self.filepath_image)
             start = time.time()
             file = open(self.filepath_image, encoding="latin1")
-            image_input = Image.open(f"{self.filepath_image}")
-            self.image1 = image_input
-            width, height = image_input.size
+            self.image_input = Image.open(f"{self.filepath_image}")
+            self.image1 = np.asarray(self.image_input)
+            print("\n\n")
+            print(self.image1.shape)
+            print("\n\n")
+            width, height = self.image_input.size
             if(width == height): 
-                image_input = image_input
+                self.image_input = self.image_input
             offset = abs(width - height) // 2
             if(width > height):
-                image_input = image_input.crop([offset, 0, width - offset, height]) # crop image
-            else:
-                image_input = image_input.crop([0, offset, width, height - offset])
-            image_input = image_input.resize((500, 500), Image.ANTIALIAS) # resize the square image
-            self.photo_input = ImageTk.PhotoImage(image_input) # convert to PhotoImage
+                self.image_input = self.image_input.crop([offset, 0, width - offset, height]) # crop image
+            else: 
+                self.image_input = self.image_input.crop([0, offset, width, height - offset])
+            self.image_input = self.image_input.resize((500, 500), Image.ANTIALIAS) # resize the square image
+            self.photo_input = ImageTk.PhotoImage(self.image_input) # convert to PhotoImage
             self.image_label1.configure(image=self.photo_input)
-            imageprocessing.InputFolderWithoutCrop(self)
-            self.path = driver.generateClosestImage(self.image1)
+            self.image_adjusted = imageprocessing.adjustOneImage(self.image1)
+            self.path = driver.generateClosestImage(self.image_adjusted)
             self.image2 = Image.open(f"{self.path}")
             self.image2 = self.image2.resize((500, 500), Image.ANTIALIAS) # resize the square image
             self.photo_closest = ImageTk.PhotoImage(self.image2)
@@ -237,13 +240,6 @@ class App(customtkinter.CTk):
     def on_closing(self, event=0):
         self.destroy()
 
-<<<<<<< HEAD
-=======
-    def get_training(self):
-        # training_dataset = 
-        print("SEPELE DEKKKK")
-
->>>>>>> b4764ba03cc8e4c9223eff300679aac91477c4f2
     def openCam(self):
         if not self.status_cam:
             self.cap = cv2.VideoCapture(2)
@@ -265,7 +261,8 @@ class App(customtkinter.CTk):
                 imageprocessing.croppicture("test\Input\live\input\input.png", "test\Input\\live\\result\\result.png")
                 if('result.png' in os.listdir(dir_path)):
                     self.image_cropped = Image.open("test//Input//live//result//result.png")
-                    self.path_matched = driver.generateClosestImage(self.image_cropped)
+                    self.image_cropped2 = np.asarray(self.image_cropped)
+                    self.path_matched = driver.generateClosestImage(self.image_cropped2)
                     self.mage_matched = Image.open(self.path_matched)
                     self.photo_closest = ImageTk.PhotoImage(self.image_matched)
                     self.image_label2.configure(image=self.photo_closest)

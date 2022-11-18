@@ -1,13 +1,30 @@
 import os
 from imageprocessing import *
-<<<<<<< HEAD
+from PIL import Image
+import numpy as np
+
+img=Image.open("test\Coba_coba\Data_Set\pins_Alex Lawther\Alex Lawther5_120.jpg")
+numpydata=np.asarray(img)
+print(numpydata.shape)
+imgres=adjustOneImage(numpydata)
+# img2=cv2.imread("test\Coba_coba\Data_Set\pins_Alex Lawther\Alex Lawther5_120.jpg")
+# print(img2.shape)
+# print(img2.shape)
+# img3=adjustOneImage(img2)
+# img2=adjustOneImage("D:\\ITB 21\KULYAHHH\SEMESTER 3\AlGeo\TUBES 2 ALGEO\Algeo02-21099\\test\Input\\612.png")
+# cv2.imshow("ass",img2)
+# print(cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY))
+# print(img2)
+# print(type(img))
+# print(type(img2))
+# print(img.shape())
+# res=adjustOneImage(img)
+# cv2.imshow("hasil",res)
 # InputFolderWithoutCrop("test/Data_set/pins_amber heard","test/User_Dataset")
 # deleteFileinFolder("test\Coba_coba\kita")
 # deleteFileinFolder("test\\Input\\User_DataSet")
-InputFolderWithCrop("D:\\fotoriz","D:\\resfoto")
-=======
-deleteFileinFolder("test\Coba_coba\kita")
->>>>>>> b4764ba03cc8e4c9223eff300679aac91477c4f2
+# InputFolderWithoutCrop("D:\\fotoriz")
+# InputFolderWithoutCrop()
 # arr=os.listdir("test//Data_Set")
 # print(arr)
 # # image=cv2.imread("D:\Kuliah\Semester 3\IF2123 Aljabar Linier dan Geometri\Algeo02-21099\\test\Data_Set\pins_Anne Hathaway\Anne Hathaway82_482.jpg")
