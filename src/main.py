@@ -46,7 +46,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.cap = cv2.VideoCapture(2)
+        self.cap = cv2.VideoCapture(0)
         self.status_cam = True
         self.title("Face Recognition GUI")
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
@@ -244,7 +244,7 @@ class App(customtkinter.CTk):
 
     def openCam(self):
         if not self.status_cam:
-            self.cap = cv2.VideoCapture(2)
+            self.cap = cv2.VideoCapture(0)
             self.camera_status = "ON"
             self.status_cam = True
         if self.switch_1.get() == 1:
@@ -259,7 +259,7 @@ class App(customtkinter.CTk):
                 if("result.png" in os.listdir(dir_path)):
                     os.remove("test\\Input\\live\\result\\result.png")
                 cv2.imwrite("test\Input\live\input\input.png", self.img)
-                self.filepath_image = ("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/live/input/input.png")
+                self.filepath_image = ("test/Input/live/input/input.png")
                 imageprocessing.croppicture("test\Input\live\input\input.png", "test\Input\\live\\result\\result.png")
                 if('result.png' in os.listdir(dir_path)):
                     start_time_cam = time.time()
