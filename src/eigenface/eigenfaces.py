@@ -74,7 +74,6 @@ def getMinimumDistance(inputLinCom, CoefMatrix) :
         distance = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
         if (distance < minimum) :
             minimum = distance
-
     return minimum
 
 def getClosestImage (dirPath, CoefMatrix, inputLinCom) :

@@ -211,6 +211,7 @@ class App(customtkinter.CTk):
             self.photo_closest = ImageTk.PhotoImage(self.image2)
             self.image_label2.configure(image=self.photo_closest)
             end = time.time()
+            self.execution_time_print = (end - start)
             executionTime = round((end - start)*100)
             print(executionTime)
             ms = executionTime % 100
@@ -270,6 +271,7 @@ class App(customtkinter.CTk):
                     self.image_matched = self.image_matched.resize((500, 500), Image.ANTIALIAS) # resize the square image
                     self.photo_closest = ImageTk.PhotoImage(self.image_matched)
                     end_time_cam = time.time()
+                    self.execution_time_print = (end_time_cam - start_time_cam)
                     executionTime = round((end_time_cam - start_time_cam)*100)
                     print(executionTime)
                     ms = executionTime % 100
@@ -302,6 +304,7 @@ class App(customtkinter.CTk):
             self.image_label2.configure(image=self.photo_closest)
             self.status_cam = False
             self.camera_status = "OFF"
+            self.label_4.configure(text="00:00:00")
             self.cap.release()
             return
 
@@ -344,6 +347,8 @@ class App(customtkinter.CTk):
         fpdf.add_page()
         fpdf.text(20,20,txt="CLOSEST IMAGE:")
         fpdf.image(self.path, x=20, y=30, w=150)
+        fpdf.set_font("Arial", size=20)
+        fpdf.text(20,270,txt=f"Execution Time: {self.execution_time_print:.2f} seconds")
         file_directory = filedialog.askdirectory()
         fpdf.output(os.path.join(file_directory, "output.pdf"))
 

@@ -7,7 +7,7 @@ from PIL import Image
 from eigenface import eigenfaces
 
 sys.path.append('')
-def computeFaceRecognition(image_input):
+def computeFaceRecognition(image_input,self):
 
     dirDataSet = "test/Input/User_DataSet"
 
@@ -35,7 +35,7 @@ def computeFaceRecognition(image_input):
 
     # *** find matrix of coeff LinearCombination ***
     allImageCoordinate = eigenfaces.getLinComMatrix(bestEigenFaces, mean_subtracted)
-    minimumDistance = eigenfaces.getMinimumDistance(inputCoordinate, allImageCoordinate)
+    minimumDistance = eigenfaces.getMinimumDistance(inputCoordinate, allImageCoordinate, self)
     print("processing.. 70%")
 
     # *** tolerance value ***
