@@ -289,6 +289,7 @@ class App(customtkinter.CTk):
                       # gambar tidak tersedia
                     # print("wajah ga terdeteksi")
                     self.image_none = Image.open(PATH + "..\\..\\image\\nf.jpg")
+                    self.path = PATH + "..\\..\\image\\nf.jpg"
                     self.photo_closest = ImageTk.PhotoImage(self.image_none)
                     self.image_label2.configure(image=self.photo_closest)
 
