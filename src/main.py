@@ -6,10 +6,8 @@ from PyQt5 import *
 from fpdf import FPDF
 from eigenface import driver
 from imageprocess import imageprocessing
-import numpy as np
 
-import sys
-import datetime
+import numpy as np
 import cv2
 import customtkinter
 import os
@@ -234,9 +232,6 @@ class App(customtkinter.CTk):
         self.image_label1 = customtkinter.CTkLabel(master=self.frame_info1, image=self.photo_input)
         self.image_label1.place(relx=0.5, rely=0.5, anchor=CENTER)        
 
-    def button_event(self):
-        print("Button pressed")
-
     def change_appearance_mode(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
@@ -307,28 +302,6 @@ class App(customtkinter.CTk):
             self.label_4.configure(text="00:00:00")
             self.cap.release()
             return
-
-    # Defining stop_cam() to stop WEBCAM Preview
-    def stop_cam(self):
-        # Stopping the camera using release() method of cv2.VideoCapture()
-        image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
-        self.photo_input = ImageTk.PhotoImage(image=image_none)
-        self.image_label1.configure(image=self.photo_input)
-        self.cap.release()
-        self.button_3.configure(text="Start Camera", command=self.start_cam)
-
-    # Defining start_cam() to start WEBCAM Preview
-    def start_cam(self):
-        # Starting the camera using cv2.VideoCapture()
-        self.img = self.cap.read()[1]
-        self.imgBGR = cv2.cvtColor(self.img, cv2.COLOR_BGR2RGB)
-        self.cam = Image.fromarray(self.imgBGR)
-        self.photo_input = ImageTk.PhotoImage(image=self.cam)
-        self.image_label1.configure(image=self.photo_input)
-        self.image_label1.after(20, self.start_cam)
-        if(time.localtime().tm_sec%5==0):
-            cv2.imwrite("sa.png", self.img)
-        self.button_3.configure(text="Stop Camera", command=self.stop_cam)
 
     def saveFile(self):
         # Save file as
