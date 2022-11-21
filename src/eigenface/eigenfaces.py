@@ -61,7 +61,6 @@ def getMinimumDistance(inputLinCom, CoefMatrix) :
         distance = getEuclideanDistance(inputLinCom, np.transpose([CoefMatrix[:, i]]))
         if (distance < minimum) :
             minimum = distance
-
     return minimum
 
 

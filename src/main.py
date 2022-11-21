@@ -6,10 +6,8 @@ from PyQt5 import *
 from fpdf import FPDF
 from eigenface import driver
 from imageprocess import imageprocessing
-import numpy as np
 
-import sys
-import datetime
+import numpy as np
 import cv2
 import customtkinter
 import os
@@ -46,7 +44,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.cap = cv2.VideoCapture(2)
+        self.cap = cv2.VideoCapture(0)
         self.status_cam = True
         self.title("Face Recognition GUI")
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
@@ -211,6 +209,7 @@ class App(customtkinter.CTk):
             self.photo_closest = ImageTk.PhotoImage(self.image2)
             self.image_label2.configure(image=self.photo_closest)
             end = time.time()
+            self.execution_time_print = (end - start)
             executionTime = round((end - start)*100)
             print(executionTime)
             ms = executionTime % 100
@@ -233,9 +232,6 @@ class App(customtkinter.CTk):
         self.image_label1 = customtkinter.CTkLabel(master=self.frame_info1, image=self.photo_input)
         self.image_label1.place(relx=0.5, rely=0.5, anchor=CENTER)        
 
-    def button_event(self):
-        print("Button pressed")
-
     def change_appearance_mode(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
@@ -244,7 +240,7 @@ class App(customtkinter.CTk):
 
     def openCam(self):
         if not self.status_cam:
-            self.cap = cv2.VideoCapture(2)
+            self.cap = cv2.VideoCapture(0)
             self.camera_status = "ON"
             self.status_cam = True
         if self.switch_1.get() == 1:
@@ -259,7 +255,7 @@ class App(customtkinter.CTk):
                 if("result.png" in os.listdir(dir_path)):
                     os.remove("test\\Input\\live\\result\\result.png")
                 cv2.imwrite("test\Input\live\input\input.png", self.img)
-                self.filepath_image = ("D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Input/live/input/input.png")
+                self.filepath_image = ("test/Input/live/input/input.png")
                 imageprocessing.croppicture("test\Input\live\input\input.png", "test\Input\\live\\result\\result.png")
                 if('result.png' in os.listdir(dir_path)):
                     start_time_cam = time.time()
@@ -270,6 +266,7 @@ class App(customtkinter.CTk):
                     self.image_matched = self.image_matched.resize((500, 500), Image.ANTIALIAS) # resize the square image
                     self.photo_closest = ImageTk.PhotoImage(self.image_matched)
                     end_time_cam = time.time()
+                    self.execution_time_print = (end_time_cam - start_time_cam)
                     executionTime = round((end_time_cam - start_time_cam)*100)
                     print(executionTime)
                     ms = executionTime % 100
@@ -289,6 +286,7 @@ class App(customtkinter.CTk):
                       # gambar tidak tersedia
                     # print("wajah ga terdeteksi")
                     self.image_none = Image.open(PATH + "..\\..\\image\\nf.jpg")
+                    self.path = PATH + "..\\..\\image\\nf.jpg"
                     self.photo_closest = ImageTk.PhotoImage(self.image_none)
                     self.image_label2.configure(image=self.photo_closest)
 
@@ -301,30 +299,9 @@ class App(customtkinter.CTk):
             self.image_label2.configure(image=self.photo_closest)
             self.status_cam = False
             self.camera_status = "OFF"
+            self.label_4.configure(text="00:00:00")
             self.cap.release()
             return
-
-    # Defining stop_cam() to stop WEBCAM Preview
-    def stop_cam(self):
-        # Stopping the camera using release() method of cv2.VideoCapture()
-        image_none = Image.open(PATH + "..\\..\\image\\folder.jpg")
-        self.photo_input = ImageTk.PhotoImage(image=image_none)
-        self.image_label1.configure(image=self.photo_input)
-        self.cap.release()
-        self.button_3.configure(text="Start Camera", command=self.start_cam)
-
-    # Defining start_cam() to start WEBCAM Preview
-    def start_cam(self):
-        # Starting the camera using cv2.VideoCapture()
-        self.img = self.cap.read()[1]
-        self.imgBGR = cv2.cvtColor(self.img, cv2.COLOR_BGR2RGB)
-        self.cam = Image.fromarray(self.imgBGR)
-        self.photo_input = ImageTk.PhotoImage(image=self.cam)
-        self.image_label1.configure(image=self.photo_input)
-        self.image_label1.after(20, self.start_cam)
-        if(time.localtime().tm_sec%5==0):
-            cv2.imwrite("sa.png", self.img)
-        self.button_3.configure(text="Stop Camera", command=self.stop_cam)
 
     def saveFile(self):
         # Save file as
@@ -343,6 +320,8 @@ class App(customtkinter.CTk):
         fpdf.add_page()
         fpdf.text(20,20,txt="CLOSEST IMAGE:")
         fpdf.image(self.path, x=20, y=30, w=150)
+        fpdf.set_font("Arial", size=20)
+        fpdf.text(20,270,txt=f"Execution Time: {self.execution_time_print:.2f} seconds")
         file_directory = filedialog.askdirectory()
         fpdf.output(os.path.join(file_directory, "output.pdf"))
 
