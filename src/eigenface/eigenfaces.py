@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import cv2
 import os
 from matplotlib import pyplot as plt
@@ -16,10 +17,14 @@ def getBestEigenFaces(mean_subtracted) :
     # Asumsi top eigen vector berbanding lurus dengan top eigen values
     greThanOne = 0
     for i in redEigenValues :
-        if i > 1 :
+        print ("eigen values : ", i)
+        if i < 1 :
+            break
+        if i > 1  :
             greThanOne += 1
 
     redEigenVectors = allEigenVectors[:, :greThanOne]
+    print("banyak eigen values yang lebih dari 1 adalah",len(redEigenVectors[0]))
     bestEigenVectorsOfCov = np.empty((256*256, 0), float)
     for i in range(len(redEigenVectors[0])) :
         temp = np.matmul(mean_subtracted, np.transpose([redEigenVectors[:, i]]))
@@ -39,52 +44,35 @@ def displayEigenFaces () :
         plt.title(i+1)
     plt.show()
 
-
-def getLinComOfEigVector(bestEigenVectorsOfCov, imageVectorInput) :
-    """
-    return the linear Combination of bestEigenVectorsOfCov from imageVectorInput
-    size : number of best eigenfaces x 1
-    """
-    x = bestEigenVectorsOfCov
-    y = np.transpose(imageVectorInput)
-    linCom = np.transpose([np.linalg.lstsq(x, y[0], rcond=None)[0]])
-    return linCom
-
-def getLinComMatrix(bestEigenVector, normalizedDataSet) :
-    """
-    return matrix with linear combination of bestEigenVector 
-    from each image in dataset in each column
-    size : number of best eigenface x number of dataset
-    """
-    CoefOfLinComMatrix = np.empty((len(bestEigenVector[0]),0), float)
-
-    for i in range(len(normalizedDataSet[0])) :
-        LinComOfNormalized = getLinComOfEigVector(bestEigenVector, np.transpose([normalizedDataSet[:,i]]))
-        CoefOfLinComMatrix = np.column_stack((CoefOfLinComMatrix, LinComOfNormalized))
     
-    return CoefOfLinComMatrix
+def getEuclideanDistance(vectorImage1, vector2) :
+    """
+    return the magnitude of vectorImage
+    """
+    return math.sqrt(sum(pow(x, 2) for x in np.subtract(vectorImage1, vector2)))
 
 def getMinimumDistance(inputLinCom, CoefMatrix) :
     """
     return minimum distance from linear combination of input image 
     and linear combination of each image in data set
     """
-    minimum = minimum = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
+    minimum  = getEuclideanDistance(inputLinCom, np.transpose([CoefMatrix[:, 0]]))
     for i in range(len(CoefMatrix[0])) :
-        distance = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
+        distance = getEuclideanDistance(inputLinCom, np.transpose([CoefMatrix[:, i]]))
         if (distance < minimum) :
             minimum = distance
 
     return minimum
 
+
 def getClosestImage (dirPath, CoefMatrix, inputLinCom) :
     """
     return filename of closest image in dataset
     """
-    minimum = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
+    minimum = getEuclideanDistance(inputLinCom, np.transpose([CoefMatrix[:, 0]]))
     imageOrder = 1
     for i in range(len(CoefMatrix[0])) :
-        distance = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
+        distance = getEuclideanDistance(inputLinCom, np.transpose([CoefMatrix[:, i]]))
         if (distance < minimum) :
             minimum = distance
             imageOrder = i + 1
@@ -95,6 +83,32 @@ def getClosestImage (dirPath, CoefMatrix, inputLinCom) :
             count += 1
             if count == imageOrder :
                 return os.path.join(dirPath, fileNames)
+
+# def getLinComOfEigVector(bestEigenVectorsOfCov, imageVectorInput) :
+#     """
+#     return the linear Combination of bestEigenVectorsOfCov from imageVectorInput
+#     size : number of best eigenfaces x 1
+#     """
+#     x = bestEigenVectorsOfCov
+#     y = np.transpose(imageVectorInput)
+#     linCom = np.transpose([np.linalg.lstsq(x, y[0], rcond=None)[0]])
+#     return linCom
+
+# def getLinComMatrix(bestEigenVector, trainingFaces) :
+#     """
+#     return matrix with linear combination of bestEigenVector 
+#     from each image in dataset in each column
+#     size : number of best eigenface x number of dataset
+#     """
+#     face_spaces = np.empty((len(bestEigenVector),0), float)
+
+#     for i in range(len(trainingFaces[0])) :
+#         LinComOfNormalized = np.transpose([np.linalg.lstsq(bestEigenVector, np.transpose([trainingFaces[:,i]]), rcond=None)[0]])
+#         print(LinComOfNormalized)
+#         face_spaces = np.column_stack((face_spaces, LinComOfNormalized))
+    
+#     return face_spaces
+
 
 # def getVectorImage(matrixImage) :
 #     """

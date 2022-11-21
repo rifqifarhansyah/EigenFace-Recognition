@@ -21,6 +21,7 @@ def getBestEigenFaces(mean_subtracted) :
     greThanOne = 0
     for i in redEigenValues :
         if i > 1 :
+            print("Eigen values : ", i)
             greThanOne += 1
 
     redEigenVectors = allEigenVectors[:, :greThanOne]
@@ -72,7 +73,7 @@ def getMinimumDistance(inputLinCom, CoefMatrix) :
     return minimum distance from linear combination of input image 
     and linear combination of each image in data set
     """
-    minimum = minimum = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
+    minimum = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
     for i in range(len(CoefMatrix[0])) :
         distance = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
         if (distance < minimum) :

@@ -176,7 +176,7 @@ class App(customtkinter.CTk):
         imageprocessing.deleteFileinFolder("test\\Input\\live\\csv_file")
         self.dataset_file = filedialog.askdirectory()
         imageprocessing.InputFolderWithoutCrop(self.dataset_file)
-        driver.getTraining()
+        self.average = driver.getTraining()
         messagebox.showinfo("Success", "Dataset Uploaded Successfully !")
         # messagebox.showinfo("SUCCESS", "You dataset has been trained!", fg="red")
 
@@ -205,7 +205,7 @@ class App(customtkinter.CTk):
             self.photo_input = ImageTk.PhotoImage(self.image_input) # convert to PhotoImage
             self.image_label1.configure(image=self.photo_input)
             self.image_adjusted = imageprocessing.adjustOneImage(self.image1)
-            self.path = driver.generateClosestImage(self.image_adjusted, self.dataset_file)
+            self.path = driver.generateClosestImage(self.image_adjusted, self.dataset_file, self.average)
             self.image2 = Image.open(f"{self.path}")
             self.image2 = self.image2.resize((500, 500), Image.ANTIALIAS) # resize the square image
             self.photo_closest = ImageTk.PhotoImage(self.image2)
@@ -265,7 +265,7 @@ class App(customtkinter.CTk):
                     start_time_cam = time.time()
                     self.image_cropped = Image.open("test//Input//live//result//result.png")
                     self.image_cropped2 = np.asarray(self.image_cropped)
-                    self.path = driver.generateClosestImage(self.image_cropped2, self.dataset_file)
+                    self.path = driver.generateClosestImage(self.image_cropped2, self.dataset_file, self.average)
                     self.image_matched = Image.open(self.path)
                     self.image_matched = self.image_matched.resize((500, 500), Image.ANTIALIAS) # resize the square image
                     self.photo_closest = ImageTk.PhotoImage(self.image_matched)
