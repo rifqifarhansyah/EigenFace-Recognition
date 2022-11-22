@@ -18,7 +18,6 @@ def computeFaceRecognition(image_input, dirInputDataSet):
             tempPath = os.path.join(dirPath, fileNames)
             image = cv2.imread(tempPath, 0) # foto grayscale yang udah 256x256
             allImage= np.column_stack((allImage, image.reshape(256*256, 1)))
-
     
     # *** find the normalized of Data Set ***
 
@@ -47,12 +46,12 @@ def computeFaceRecognition(image_input, dirInputDataSet):
     # inputCoordinate = eigenfaces.getLinComOfEigVector(bestEigenVector, vectorImage)
     inputCoordinate = np.linalg.lstsq(bestEigenFaces, vectorImage, rcond=None)[0]
 
-    minimumDistance = eigenfaces.getMinimumDistance(inputCoordinate, allImageCoordinate)
+    minimumDistance, orderImage = eigenfaces.getMinimumDistance(inputCoordinate, allImageCoordinate)
     print(minimumDistance)
 
     # *** tolerance value ***
-    toleranceValue = 1
-    imagefile = eigenfaces.getClosestImage(dirInputDataSet,allImageCoordinate, inputCoordinate)
+    toleranceValue = 0.8
+    imagefile = eigenfaces.getClosestImage(dirInputDataSet, orderImage)
     print(imagefile)
     # print(inputCoordinate)
     # print(eigenFace)
@@ -64,6 +63,9 @@ def computeFaceRecognition(image_input, dirInputDataSet):
         return("image/nf.jpg")
 
 def getTraining() :
+    """
+    
+    """
     start_training = time.time()
     dirDataSet = "test/Input/User_DataSet"
 
@@ -92,19 +94,17 @@ def getTraining() :
     allImageCoordinate = np.linalg.lstsq(bestEigenFaces, mean_subtracted, rcond=None)[0]
     # allImageCoordinate = eigenfaces.getLinComMatrix(bestEigenFaces, mean_subtracted)
 
-    np.savetxt("test\\Input\\live\\csv_file\\faceSpaces.csv", allImageCoordinate, delimiter = ",")
-
-    np.savetxt("test\\Input\\live\\csv_file\\bestEigenFaces.csv", bestEigenFaces, delimiter = ",")
+    # np.savetxt("test\\Input\\live\\csv_file\\faceSpaces.csv", allImageCoordinate, delimiter = ",")
+    # np.savetxt("test\\Input\\live\\csv_file\\bestEigenFaces.csv", bestEigenFaces, delimiter = ",")
     end_training = time.time()
     print("Training udah selesai")
     print("waktu training :", end_training-start_training)
-    return np.transpose([allImage.mean(axis=1)])
+    return np.transpose([allImage.mean(axis=1)]), bestEigenFaces, allImageCoordinate
 
-def generateClosestImage(image_input, dirInputDataSet, averageImage) :
+def generateClosestImage(image_input, dirInputDataSet, averageImage, bestEigenFaces, allImageCoordinate) :
 
-    bestEigenFaces = np.loadtxt("test\\Input\\live\\csv_file\\bestEigenFaces.csv", delimiter=",", dtype=float)
-    
-    allImageCoordinate = np.loadtxt("test\\Input\\live\\csv_file\\faceSpaces.csv", delimiter = ",", dtype=float)
+    # bestEigenFaces = np.loadtxt("test\\Input\\live\\csv_file\\bestEigenFaces.csv", delimiter=",", dtype=float)
+    # allImageCoordinate = np.loadtxt("test\\Input\\live\\csv_file\\faceSpaces.csv", delimiter = ",", dtype=float)
 
     # *** convert test image to vector ***
     vectorImage = np.subtract(image_input.reshape(256*256, 1), averageImage)
@@ -113,12 +113,12 @@ def generateClosestImage(image_input, dirInputDataSet, averageImage) :
     # inputCoordinate = eigenfaces.getLinComOfEigVector(bestEigenVector, vectorImage)
     inputCoordinate = np.linalg.lstsq(bestEigenFaces, vectorImage, rcond=None)[0]
 
-    minimumDistance = eigenfaces.getMinimumDistance(inputCoordinate, allImageCoordinate)
+    minimumDistance, imageOrder = eigenfaces.getMinimumDistance(inputCoordinate, allImageCoordinate)
     print(minimumDistance)
 
     # *** tolerance value ***
     toleranceValue = 1
-    imagefile = eigenfaces.getClosestImage(dirInputDataSet,allImageCoordinate, inputCoordinate)
+    imagefile = eigenfaces.getClosestImage(dirInputDataSet, imageOrder)
     print(imagefile)
     # print(inputCoordinate)
     # print(eigenFace)

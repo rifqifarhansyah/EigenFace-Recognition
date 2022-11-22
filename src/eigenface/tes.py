@@ -28,9 +28,8 @@ start_time = time.time()
 # print(matrix_rows_average)
 # displayEigenFaces ()
 
-best_eigen = np.array([[1, 2, 3, 4], 
-                      [12, 6, 2, 8],
-                      [17, 10.5, 8, 12]])
+best_eigen = np.array([1, 2, 3, 4]) 
+
 # wow = np.empty((3, 0))
 allImage = np.array([[5, 8 , 9, 52, 41],
                     [29, 182, 15, 219, 318],
@@ -38,7 +37,7 @@ allImage = np.array([[5, 8 , 9, 52, 41],
 # matrix = np.array([7, 4,2])
 # hasil = np.subtract(np.transpose([allImage]), np.transpose([matrix]))
 # hasil = best_eigen.mean(axis=1)
-hasil = np.matmul(best_eigen, (np.linalg.lstsq(best_eigen, allImage, rcond=None)[0]))
+hasil = 5//3
 # array = np.array([[1], [12], [17]])
 
 # hasil = np.transpose([allImage.mean(axis=1)])

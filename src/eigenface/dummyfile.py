@@ -9,7 +9,7 @@ np.set_printoptions(threshold=sys.maxsize)
 start_time = time.time()
 
 
-image_input = cv2.imread("D://ITB 21//KULYAHHH//SEMESTER 3//AlGeo//TUBES 2 ALGEO//Algeo02-21099//test//Coba_coba//IMG-20221117-WA0009.jpg", 0)
+image_input = cv2.imread("D://ITB 21//KULYAHHH//SEMESTER 3//AlGeo//TUBES 2 ALGEO//Algeo02-21099//test//Coba_coba//Alvaro Morte29_239.jpg", 0)
 
 dirDataSet = "D://ITB 21//KULYAHHH//SEMESTER 3//AlGeo//TUBES 2 ALGEO//Algeo02-21099//test//Input//User_DataSet"
 
@@ -23,7 +23,7 @@ for (dirPath, dirNames, file) in os.walk(dirDataSet):
 # *** find the normalized of Data Set ***
 mean_subtracted = allImage - allImage.mean(axis=1, keepdims=True)
 
-print(np.linalg.norm(np.subtract(image_input.reshape(256*256, 1), np.transpose([allImage[:, 0]]))))
+# print(np.linalg.norm(np.subtract(image_input.reshape(256*256, 1), np.transpose([allImage[:, 0]]))))
 
 # *** convert test image to vector and centered***
 # 1

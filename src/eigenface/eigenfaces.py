@@ -5,6 +5,7 @@ import os
 from matplotlib import pyplot as plt
 from eigenface import eigen
 
+
 def getBestEigenFaces(mean_subtracted) :
     """
     return matriks of the best eigenvector of covariance 
@@ -14,23 +15,23 @@ def getBestEigenFaces(mean_subtracted) :
     redCov = np.matmul(np.transpose(mean_subtracted), mean_subtracted)
     redEigenValues, allEigenVectors = eigen.getEignValuesVectors(redCov)
 
-    # Asumsi top eigen vector berbanding lurus dengan top eigen values
-    greThanOne = 0
-    for i in redEigenValues :
-        print ("eigen values : ", i)
-        if i < 1 :
-            break
-        if i > 1  :
-            greThanOne += 1
+    numEigenValues = len(redEigenValues)
+ 
+    BestEigenFaces = np.empty((256*256, 0), float)
 
-    redEigenVectors = allEigenVectors[:, :greThanOne]
-    print("banyak eigen values yang lebih dari 1 adalah",len(redEigenVectors[0]))
-    bestEigenVectorsOfCov = np.empty((256*256, 0), float)
-    for i in range(len(redEigenVectors[0])) :
-        temp = np.matmul(mean_subtracted, np.transpose([redEigenVectors[:, i]]))
-        bestEigenVectorsOfCov = np.column_stack((bestEigenVectorsOfCov, temp))
+    count = 0
+    for i in range(numEigenValues) :
+        if redEigenValues[i] > 1 :
+            if numEigenValues > 100 and redEigenValues[i] < np.mean(redEigenValues):
+                break
+            print(f"eigen values ke {i} adalah ", redEigenValues[i])
+            temp = np.matmul(mean_subtracted, np.transpose([allEigenVectors[:, i]]))
+            BestEigenFaces = np.column_stack((BestEigenFaces, temp))
+            count += 1
     
-    return bestEigenVectorsOfCov
+    print("banyak eigen values yang adalah",count)
+    return BestEigenFaces
+
 
 def displayEigenFaces () :
     fig = plt.figure(figsize=(3, 5))
@@ -57,31 +58,51 @@ def getMinimumDistance(inputLinCom, CoefMatrix) :
     and linear combination of each image in data set
     """
     minimum  = getEuclideanDistance(inputLinCom, np.transpose([CoefMatrix[:, 0]]))
-    for i in range(len(CoefMatrix[0])) :
-        distance = getEuclideanDistance(inputLinCom, np.transpose([CoefMatrix[:, i]]))
-        if (distance < minimum) :
-            minimum = distance
-    return minimum
-
-
-def getClosestImage (dirPath, CoefMatrix, inputLinCom) :
-    """
-    return filename of closest image in dataset
-    """
-    minimum = getEuclideanDistance(inputLinCom, np.transpose([CoefMatrix[:, 0]]))
     imageOrder = 1
     for i in range(len(CoefMatrix[0])) :
         distance = getEuclideanDistance(inputLinCom, np.transpose([CoefMatrix[:, i]]))
         if (distance < minimum) :
             minimum = distance
             imageOrder = i + 1
+    return minimum, imageOrder
 
+def getClosestImage (dirPath, imageOrder) :
+    """
+    return filename of closest image in dataset
+    """
     count = 0
     for (dirPath, dirNames, file) in os.walk(dirPath):
         for fileNames in file :
             count += 1
             if count == imageOrder :
                 return os.path.join(dirPath, fileNames)
+
+# def getBestEigenFaces(mean_subtracted) :
+#     """
+#     return matriks of the best eigenvector of covariance 
+#     matrix of normalizedData, with EigenVector in each column
+#     size : N^2 x count (count is number of best)
+#     """
+#     redCov = np.matmul(np.transpose(mean_subtracted), mean_subtracted)
+#     redEigenValues, allEigenVectors = eigen.getEignValuesVectors(redCov)
+
+#     # Asumsi top eigen vector berbanding lurus dengan top eigen values
+#     greThanOne = 0
+#     for i in redEigenValues :
+#         print ("eigen values : ", i)
+#         if i < 1 :
+#             break
+#         if i > 1  :
+#             greThanOne += 1
+
+#     redEigenVectors = allEigenVectors[:, :greThanOne]
+#     print("banyak eigen values yang lebih dari 1 adalah",len(redEigenVectors[0]))
+#     getBestEigenFaces = np.empty((256*256, 0), float)
+#     for i in range(len(redEigenVectors[0])) :
+#         temp = np.matmul(mean_subtracted, np.transpose([redEigenVectors[:, i]]))
+#         getBestEigenFaces = np.column_stack((getBestEigenFaces, temp))
+    
+#     return getBestEigenFaces
 
 # def getLinComOfEigVector(bestEigenVectorsOfCov, imageVectorInput) :
 #     """
