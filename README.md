@@ -85,9 +85,15 @@ python main.py
 
 ## Screenshots
 <p align=center>
-  <img src="..\image\ss\ss_1.png\">
-  <img src="/image/ss/ss_2.png">
+  <img src="/image/ss/ss_1.png/">
+  <p>Figure 1. Main Menu</p>
+  <nl>
+  <img src="/image/ss/ss_2.png/">
+  <p>Figure 2. Identified Image (by Upload)</p>
+  <nl>
   <img src="/image/ss/ss_3.png/">
+  <p>Figure 3. Unidentified Image (by Webcam)</p>
+  <nl>
 </p>
 
 <a name="structure"></a>
