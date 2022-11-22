@@ -103,7 +103,7 @@ class App(customtkinter.CTk):
         self.label_mode1.grid(row=4, column=0, pady=0, padx=20, sticky="w")
 
         self.optionmenu_2 = customtkinter.CTkOptionMenu(master=self.frame_left,
-                                                        values=["0", "1", "2", "3"],
+                                                        values=['0', '1', '2', '3'],
                                                         command=self.change_camera)
         self.optionmenu_2.grid(row=5, column=0, pady=10, padx=20)
 
@@ -188,7 +188,6 @@ class App(customtkinter.CTk):
         imageprocessing.InputFolderWithoutCrop(self.dataset_file)
         driver.getTraining()
         messagebox.showinfo("Success", "Dataset Uploaded Successfully !")
-
 
     def open_file_image(self): # open file dialog for image
         if len(os.listdir(r"test\\Input\\live\\csv_file")) == 0 :
