@@ -85,7 +85,7 @@ python main.py
 
 ## Screenshots
 <p align=center>
-  <img src="/image/ss/ss_1.png/">
+  <img src="/image/ss/ss_1.png/" width=500>
   <p>Figure 1. Main Menu (light mode)</p>
   <nl>
   <img src="/image/ss/ss_4.png/">
