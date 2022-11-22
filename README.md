@@ -103,9 +103,6 @@ python main.py
 
 ## Structure
 ```bash
-│   data3.csv
-│   detcted.jpg
-│   face.jpg
 │   README.md
 │   requirement.txt
 │
@@ -119,10 +116,6 @@ python main.py
 │   │   folder.jpg
 │   │   icon.png
 │   │   nf.jpg
-│   │   nim.png
-│   │   no_imagejpg.jpg
-│   │   rifki.jpg
-│   │   Success.ico
 │   │
 │   └───ss
 │           ss_1.png
@@ -169,7 +162,6 @@ python main.py
 │   │       haarcascade_frontalface_alt2.xml
 │   │
 │   ├───GUI
-│   │   │   coba.py
 │   │   │
 │   │   └───__pycache__
 │   │           main.cpython-39.pyc
