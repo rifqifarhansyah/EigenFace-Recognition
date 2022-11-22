@@ -72,7 +72,7 @@ class App(customtkinter.CTk):
         # ============ frame_left ============
         # configure grid layout (1x11)
         self.frame_left.grid_rowconfigure(0, minsize=10)   # empty row with minsize as spacing
-        self.frame_left.grid_rowconfigure(7, weight=1)  # empty row as spacing
+        self.frame_left.grid_rowconfigure(9, weight=1)  # empty row as spacing
 
         self.label_1 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Insert Your DataSet",
@@ -97,47 +97,55 @@ class App(customtkinter.CTk):
         self.switch_1 = customtkinter.CTkSwitch(master=self.frame_left,
                                                 text="Camera",
                                                 command=self.openCam)
-        self.switch_1.grid(row=4, column=0, pady=10, padx=20)
+        self.switch_1.grid(row=6, column=0, pady=10, padx=20)
+
+        self.label_mode1 = customtkinter.CTkLabel(master=self.frame_left, text="Choose Camera :")
+        self.label_mode1.grid(row=4, column=0, pady=0, padx=20, sticky="w")
+
+        self.optionmenu_2 = customtkinter.CTkOptionMenu(master=self.frame_left,
+                                                        values=["0", "1", "2", "3"],
+                                                        command=self.change_camera)
+        self.optionmenu_2.grid(row=5, column=0, pady=10, padx=20)
 
         self.label_3 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Execution Time:",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_3.grid(row=5, column=0, pady=5, padx=10)
+        self.label_3.grid(row=7, column=0, pady=5, padx=10)
 
         self.label_4 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="00:00:00",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_4.grid(row=6, column=0, pady=5, padx=10)
+        self.label_4.grid(row=8, column=0, pady=5, padx=10)
 
         self.label_spacing = customtkinter.CTkLabel(master=self.frame_left,
                                                 text="",
                                                 text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_spacing.grid(row=7, column=0, pady=5, padx=10)
+        self.label_spacing.grid(row=9, column=0, pady=5, padx=10)
 
         self.button_3 = customtkinter.CTkButton(master=self.frame_left,
                                                 text="",
                                                 width=0,
                                                 height=0)
-        self.button_3.grid(row=8, column=0, pady=10, padx=20)
+        self.button_3.grid(row=10, column=0, pady=10, padx=20)
 
         self.label_5 = customtkinter.CTkLabel(master=self.frame_left,
                                               text="Result",
                                               text_font=("Roboto Medium", -16))  # font name and size in px
-        self.label_5.grid(row=9, column=0, pady=5, padx=10)
+        self.label_5.grid(row=11, column=0, pady=5, padx=10)
         
 
         self.button_5 = customtkinter.CTkButton(master=self.frame_left,
                                                 text="Download",
                                                 command=self.formating_output_file)
-        self.button_5.grid(row=10, column=0, pady=10, padx=20)
+        self.button_5.grid(row=12, column=0, pady=10, padx=20)
 
         self.label_mode = customtkinter.CTkLabel(master=self.frame_left, text="Appearance Mode:")
-        self.label_mode.grid(row=11, column=0, pady=0, padx=20, sticky="w")
+        self.label_mode.grid(row=13, column=0, pady=0, padx=20, sticky="w")
 
         self.optionmenu_1 = customtkinter.CTkOptionMenu(master=self.frame_left,
                                                         values=["Light", "Dark"],
                                                         command=self.change_appearance_mode)
-        self.optionmenu_1.grid(row=12, column=0, pady=10, padx=20, sticky="w")
+        self.optionmenu_1.grid(row=14, column=0, pady=10, padx=20, sticky="w")
 
         # ============ frame_right ============
 
@@ -168,6 +176,10 @@ class App(customtkinter.CTk):
 
         # set default values
         self.optionmenu_1.set("Light")
+        self.optionmenu_2.set("0")
+
+    def change_camera(self, value):
+        self.camera = int(value)
 
     def open_file_dataset(self): # open file dialog for dataset
         imageprocessing.deleteFileinFolder("test\\Input\\User_DataSet")
@@ -176,7 +188,7 @@ class App(customtkinter.CTk):
         imageprocessing.InputFolderWithoutCrop(self.dataset_file)
         driver.getTraining()
         messagebox.showinfo("Success", "Dataset Uploaded Successfully !")
-        # messagebox.showinfo("SUCCESS", "You dataset has been trained!", fg="red")
+
 
     def open_file_image(self): # open file dialog for image
         if len(os.listdir(r"test\\Input\\live\\csv_file")) == 0 :
@@ -240,7 +252,7 @@ class App(customtkinter.CTk):
 
     def openCam(self):
         if not self.status_cam:
-            self.cap = cv2.VideoCapture(0)
+            self.cap = cv2.VideoCapture(self.camera)
             self.camera_status = "ON"
             self.status_cam = True
         if self.switch_1.get() == 1:
