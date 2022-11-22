@@ -86,13 +86,16 @@ python main.py
 ## Screenshots
 <p align=center>
   <img src="/image/ss/ss_1.png/">
-  <p>Figure 1. Main Menu</p>
+  <p>Figure 1. Main Menu (light mode)</p>
+  <nl>
+  <img src="/image/ss/ss_4.png/">
+  <p>Figure 2. Main Menu (dark mode)</p>
   <nl>
   <img src="/image/ss/ss_2.png/">
-  <p>Figure 2. Identified Image (by Upload)</p>
+  <p>Figure 3. Identified Image (by Upload)</p>
   <nl>
   <img src="/image/ss/ss_3.png/">
-  <p>Figure 3. Unidentified Image (by Webcam)</p>
+  <p>Figure 4. Unidentified Image (by Webcam)</p>
   <nl>
 </p>
 
