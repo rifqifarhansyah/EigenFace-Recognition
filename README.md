@@ -4,7 +4,7 @@
 </h2>
 <hr>
 
-> Live demo [_here_](https://www.youtube.com/watch?v=xm5gqvvVv0k&ab_channel=MohammadRifqiFarhansyah). 
+> To watch the live demo of the program [_here_](https://www.youtube.com/watch?v=xm5gqvvVv0k&ab_channel=MohammadRifqiFarhansyah). 
 
 <p align="center">
 <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54">
@@ -85,9 +85,9 @@ python main.py
 
 ## Screenshots
 <p align=center>
-  <img src="//image//ss//ss_1.png">
-  <img src="//image//ss//ss_2.png">
-  <img src="//image//ss//ss_3.png">
+  <img src="..\image\ss\ss_1.png\">
+  <img src="/image/ss/ss_2.png">
+  <img src="/image/ss/ss_3.png/">
 </p>
 
 <a name="structure"></a>
@@ -259,7 +259,7 @@ Project is: _complete_
 
 ## Room for Improvement
 Room for Improvement:
-- Optimalization of the code
+- Optimalization of the EigenFace Algorithm code
 - Adding more features
 
 <a name="acknowledgements">
