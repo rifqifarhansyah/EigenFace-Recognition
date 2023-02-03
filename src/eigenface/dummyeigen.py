@@ -13,23 +13,21 @@ def getBestEigenFaces(mean_subtracted) :
     size : N^2 x count (count is number of best)
     """
     redCov = np.matmul(np.transpose(mean_subtracted), mean_subtracted)
-    start = time.time()
     redEigenValues, allEigenVectors = getEignValuesVectors(redCov)
-    end = time.time()
-    print("\nwaktu untuk mencari eigen value dan vector = ", end-start, " detik\n")
-    # Asumsi top eigen vector berbanding lurus dengan top eigen values
-    greThanOne = 0
-    for i in redEigenValues :
-        if i > 1 :
-            greThanOne += 1
 
-    redEigenVectors = allEigenVectors[:, :greThanOne]
-    bestEigenVectorsOfCov = np.empty((256*256, 0), float)
-    for i in range(len(redEigenVectors[0])) :
-        temp = np.matmul(mean_subtracted, np.transpose([redEigenVectors[:, i]]))
-        bestEigenVectorsOfCov = np.column_stack((bestEigenVectorsOfCov, temp))
+    averageEigenValues = np.mean(redEigenValues)
+    count = 0
+ 
+    BestEigenFaces = np.empty((256*256, 0), float)
+    for i in range(len(redEigenValues)) :
+        if (redEigenValues[i] > averageEigenValues and redEigenValues[i] > 1) :
+            print(f"eigen values ke {i} adalah ", redEigenValues[i])
+            count += 1
+            temp = np.matmul(mean_subtracted, np.transpose([allEigenVectors[:, i]]))
+            BestEigenFaces = np.column_stack((BestEigenFaces, temp))
     
-    return bestEigenVectorsOfCov
+    print("banyak eigen values yang adalah",count)
+    return BestEigenFaces
 
 def displayEigenFaces () :
     fig = plt.figure(figsize=(3, 5))
@@ -72,7 +70,7 @@ def getMinimumDistance(inputLinCom, CoefMatrix) :
     return minimum distance from linear combination of input image 
     and linear combination of each image in data set
     """
-    minimum = minimum = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
+    minimum = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, 0]])))
     for i in range(len(CoefMatrix[0])) :
         distance = np.linalg.norm(np.subtract(inputLinCom, np.transpose([CoefMatrix[:, i]])))
         if (distance < minimum) :

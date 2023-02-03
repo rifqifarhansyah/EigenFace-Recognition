@@ -44,7 +44,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(2)
         self.status_cam = True
         self.title("Face Recognition GUI")
         self.geometry(f"{App.WIDTH}x{App.HEIGHT}")
@@ -183,14 +183,14 @@ class App(customtkinter.CTk):
 
     def open_file_dataset(self): # open file dialog for dataset
         imageprocessing.deleteFileinFolder("test\\Input\\User_DataSet")
-        imageprocessing.deleteFileinFolder("test\\Input\\live\\csv_file")
+        # imageprocessing.deleteFileinFolder("test\\Input\\live\\csv_file")
         self.dataset_file = filedialog.askdirectory()
         imageprocessing.InputFolderWithoutCrop(self.dataset_file)
-        driver.getTraining()
+        self.average, self.bestEigen, self.allImageCoordinate = driver.getTraining()
         messagebox.showinfo("Success", "Dataset Uploaded Successfully !")
 
     def open_file_image(self): # open file dialog for image
-        if len(os.listdir(r"test\\Input\\live\\csv_file")) == 0 :
+        if len(os.listdir(r"test\\Input\\User_DataSet")) == 0 :
             messagebox.showerror("Error", "Please Upload Dataset First")
         else :
             self.filepath_image = filedialog.askopenfilename(title="Open a Text File", filetypes=(("png files","*.png"), ("jpg files","*.jpg"), ("jpeg files","*.jpeg")))
@@ -214,7 +214,7 @@ class App(customtkinter.CTk):
             self.photo_input = ImageTk.PhotoImage(self.image_input) # convert to PhotoImage
             self.image_label1.configure(image=self.photo_input)
             self.image_adjusted = imageprocessing.adjustOneImage(self.image1)
-            self.path = driver.generateClosestImage(self.image_adjusted, self.dataset_file)
+            self.path = driver.generateClosestImage(self.image_adjusted, self.dataset_file, self.average, self.bestEigen, self.allImageCoordinate)
             self.image2 = Image.open(f"{self.path}")
             self.image2 = self.image2.resize((500, 500), Image.ANTIALIAS) # resize the square image
             self.photo_closest = ImageTk.PhotoImage(self.image2)
@@ -251,7 +251,11 @@ class App(customtkinter.CTk):
 
     def openCam(self):
         if not self.status_cam:
+<<<<<<< HEAD
+            self.cap = cv2.VideoCapture(2)
+=======
             self.cap = cv2.VideoCapture(self.camera)
+>>>>>>> 631b3784d710d4e3a7a0cf2fef3f2e1167697ef3
             self.camera_status = "ON"
             self.status_cam = True
         if self.switch_1.get() == 1:
@@ -272,7 +276,7 @@ class App(customtkinter.CTk):
                     start_time_cam = time.time()
                     self.image_cropped = Image.open("test//Input//live//result//result.png")
                     self.image_cropped2 = np.asarray(self.image_cropped)
-                    self.path = driver.generateClosestImage(self.image_cropped2, self.dataset_file)
+                    self.path = driver.generateClosestImage(self.image_cropped2, self.dataset_file, self.average, self.bestEigen, self.allImageCoordinate)
                     self.image_matched = Image.open(self.path)
                     self.image_matched = self.image_matched.resize((500, 500), Image.ANTIALIAS) # resize the square image
                     self.photo_closest = ImageTk.PhotoImage(self.image_matched)

@@ -2,6 +2,7 @@ import cv2
 import os
 import time
 import shutil
+import numpy as np
 from PIL import Image
 
 def croppicture(path,output): #input picture dengan wajah belum di crop
@@ -26,8 +27,8 @@ def croppicture(path,output): #input picture dengan wajah belum di crop
         cv2.imwrite(output, image)
         
 def gray(path,output): # menjadikan gambar menjadi grayscale dan resize
-    image = cv2.imread(path)
-
+    # image = cv2.imread(path)
+    image = np.asarray(Image.open(path))
     scale_percent = 256 # percent of original size
     width = int(image.shape[1] * scale_percent / image.shape[1])
     height = int(image.shape[0] * scale_percent / image.shape[0])
@@ -59,7 +60,7 @@ def adjustOneImage(image): # menjadikan gambar menjadi grayscale dan resize
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         return gray_image
     else :
-        print("ga gray")
+        print("udah gray")
         # gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         return image
         

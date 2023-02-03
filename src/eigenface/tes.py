@@ -10,6 +10,8 @@ import time
 # displayEigenFaces ()
 start_time = time.time()
 
+
+
 # Path = "D:/ITB 21/KULYAHHH/SEMESTER 3/AlGeo/TUBES 2 ALGEO/Algeo02-21099/test/Coba_coba/gray"
 
 # normalizedDataSet = np.empty((256*256,0), float)
@@ -24,7 +26,23 @@ start_time = time.time()
 # my_matrix = np.array([[1, 2, 3, 4], [1, 1, 1, 1]])
 # matrix_rows_average = my_matrix - my_matrix.mean(axis=1, keepdims=True)
 # print(matrix_rows_average)
-displayEigenFaces ()
+# displayEigenFaces ()
+
+best_eigen = np.array([1, 2, 3, 4]) 
+
+# wow = np.empty((3, 0))
+allImage = np.array([[5, 8 , 9, 52, 41],
+                    [29, 182, 15, 219, 318],
+                    [21, 31, 29, 37, 43]])
+# matrix = np.array([7, 4,2])
+# hasil = np.subtract(np.transpose([allImage]), np.transpose([matrix]))
+# hasil = best_eigen.mean(axis=1)
+hasil = 5//3
+# array = np.array([[1], [12], [17]])
+
+# hasil = np.transpose([allImage.mean(axis=1)])
+# hasil = np.linalg.norm(np.subtract(array, np.transpose([allImage[:,0]])))
+print(hasil)
 
 # my_matrix = np.array([[3], [8]])
 # redEigenValues, allEigenVectors = np.linalg.eig(my_matrix)
