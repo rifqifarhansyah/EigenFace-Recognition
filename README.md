@@ -29,7 +29,7 @@
 <a name="general-information"></a>
 
 ## General Information
-A simple face recognition GUI that utilizing the Eigen Concepts of matrices using Tkinter, OpenCV, PIL, numpy, etc.
+A simple face recognition GUI that utilizing the Eigen Concepts of matrices using Tkinter, OpenCV, PIL, numpy, etc. This project got the `best score among informatics engineering students  at ITB in 2022`.  
 
 <a name="member-list"></a>
 
